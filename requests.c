@@ -14,8 +14,11 @@
 //https://www.binarytides.com/receive-full-data-with-recv-socket-function-in-c/
 //https://stackoverflow.com/questions/22077802/simple-c-example-of-doing-an-http-post-and-consuming-the-response
 int main(int argc, char *argv[]){
-    char *request = "/films/58611129-2dbc-4a81-a72f-77ddfc1b1b49";
-    char *html = "ghibliapi.herokuapp.com";
+
+    char *str1 = "/ads/apisearch?publisher=";
+    char *str2 = "&q=python+developer&l=san%20francisco%2C+ca&sort=&radius=90&st=&jt=fulltime&start=&limit=25&fromage=&filter=&latlong=1&co=us&chnl=&userip=1.2.3.4&useragent=Mozilla/%2F4.0%28Firefox%29&v=2&format=json";
+    char *request = concatAPI(str1,INDEED_KEY,str2);
+    char *html = "api.indeed.com";
     getRequest(request,html);
 
     return 0;

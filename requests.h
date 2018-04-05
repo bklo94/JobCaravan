@@ -75,4 +75,13 @@ void getRequest(char *requests, char *URL){
     close(sockfd);
 }
 
+char* concatAPI(char *a, const char *b, char *c){
+    size_t len = strlen(a) + strlen(b) + strlen(c);
+    char *str = malloc(len + 1);
+    strcpy(str,a);
+    strcat(str,b);
+    strcat(str,c);
+    return str;
+}
+
 #endif
