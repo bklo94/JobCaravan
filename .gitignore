@@ -2,4 +2,7 @@
 API\.h
 a.exe
 a.exe.stackdump
-a.out
+*.out
+*.o
+
+request
