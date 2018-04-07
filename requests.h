@@ -8,71 +8,35 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
-#include<fcntl.h>
+#include <fcntl.h>
 #include <sys/types.h>
+#include <curl/curl.h>
 
 void error(const char *msg) { perror(msg); exit(0); }
 
-void getRequest(char *requests, char *URL){
+void getRequest(char *requests){
+   CURL *curl;
+   CURLcode res;
 
-    int portNum = 80;
-    char *host = URL;
-    char *messageFormat = "GET %s HTTP/1.1\r\nHost: %s\r\n\r\n";
+   curl_global_init(CURL_GLOBAL_DEFAULT);
 
-    struct hostent *server;
-    struct sockaddr_in serv_addr;
-    int sockfd, bytes, sent, received, total, rv;
-    char message[1024], response[4096];
+   curl = curl_easy_init();
+   if (curl){
+      curl_easy_setopt(curl, CURLOPT_URL, requests);
+#ifdef SKIP_PEER_VERIFICATION
+   curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
+#endif
 
-    struct timeval timeout;
-    timeout.tv_sec = 5;
-    timeout.tv_usec= 0;
-
-    sprintf(message, messageFormat, requests,URL);
-    printf("\n%s\n", message);
-
-    sockfd = socket(AF_INET, SOCK_STREAM, 0);
-    if (sockfd < 0) error("ERROR opening socket");
-
-    server = gethostbyname(host);
-    if (server == NULL) error("ERROR, no such host");
-
-    memset(&serv_addr,0,sizeof(serv_addr));
-    serv_addr.sin_family = AF_INET;
-    serv_addr.sin_port = htons(portNum);
-    memcpy(&serv_addr.sin_addr.s_addr,server->h_addr,server->h_length);
-
-    if (connect(sockfd,(struct sockaddr *)&serv_addr,sizeof(serv_addr)) < 0)
-        error("ERROR connecting");
-
-    total = strlen(message);
-    sent = 0;
-    do{
-        bytes = write(sockfd,message+sent,total-sent);
-        if (bytes < 0)
-            error("ERROR writing message to socket");
-        if (bytes == 0)
-            break;
-        sent += bytes;
-    }while (sent < total);
-
-    if (setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO,(struct timeval *)&timeout, sizeof(struct timeval)) < 0 ) error("ERROR Timeout socket setup error");
-    printf("Getting Message\n\n");
-    memset(response,0,sizeof(response));
-    total = sizeof(response - 1);
-    received = 0;
-    do{
-        printf("%s", response);
-        memset(response, 0, sizeof(response));
-        bytes = recv(sockfd, response, 1024, 0);
-        if (bytes < 0)
-            printf("ERROR reading response from socket");
-        if (bytes <= 0)
-            break;
-        received += bytes;
-    } while(1);
-
-    close(sockfd);
+#ifdef SKIP_HOSTNAME_VERIFICATION
+   curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST,0L);
+#endif
+   res = curl_easy_perform(curl);
+   if(res != CURLE_OK)
+      fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
+   curl_easy_cleanup(curl);
+   }
+   curl_global_cleanup();
+   return;
 }
 
 char* concatAPI(char *a, const char *b, char *c){
