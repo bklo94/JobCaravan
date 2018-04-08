@@ -1,10 +1,36 @@
-CC=gcc
-CFLAGS=-lcurl -lm
-DEPS = requests.h API.h cJSON.h
-OBJ = cJSON.o requests.o
+#compiler and flags
+CC			= gcc
+CFLAGS	+= -Wall
+CPPFLAGS	+=-I include -lcjson
 
-%.o: %.c $(DEPS)
-	$(CC) -c -o $@ $< $(CFLAGS)
+#linker and flags
+LINKER	= gcc
+LIB_PATH	= -I /usr/include/postgresql
+LFLAGS	+= -I lib -I include
+LDLIBS 	+= -lm $(LIB_PATH) -lpq -lcurl
 
-request: $(OBJ)
-	gcc -o $@ $^ $(CFLAGS)
+#target directory and name of executable
+EXE	= bin/requests
+
+#directories
+SRCDIR	= src
+OBJDIR	= obj
+BINDIR	= bin
+
+SRC		= $(wildcard $(SRCDIR)/*.c)
+OBJ		= $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
+rm			= rm -f
+
+.PHONY: all clean
+
+all: $(EXE)
+
+$(EXE): $(SRC)
+	$(CC) $(LFLAGS) $^ $(LDLIBS) -o $@
+
+$(OBJDIR)/.o: $(SRCDIR)/%.c
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+
+clean:
+	$(rm) $(EXE)
+	@echo "Cleanup complete!"

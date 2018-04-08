@@ -1,7 +1,7 @@
 #ifndef REQUESTS_H
 #define REQUESTS_H
 
-#include "cJSON.h"
+#include "../lib/cJSON.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -39,15 +39,15 @@ static size_t writeMemoryCallBack(void *contents, size_t size, size_t nmemb, voi
 
 //https://curl.haxx.se/libcurl/c/https.html
 //https://curl.haxx.se/libcurl/c/getinmemory.html
-int getRequest(char *URL){
+cJSON* getRequest(char *URL){
    CURL *curl_handle;
    CURLcode res;
    struct MemoryStruct chunk;
    chunk.memory = malloc(1);
    chunk.size = 0;
    struct cJSON test;
-
-   int i;
+   cJSON *string, *string2, *array;
+   int i = 0;
    cJSON *elem;
    cJSON *name;
    curl_global_init(CURL_GLOBAL_ALL);
@@ -61,10 +61,13 @@ int getRequest(char *URL){
    if(res != CURLE_OK){
       fprintf(stderr, "ERROR: curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
    }
+   //How to iterate through a cJSON object
+   //https://stackoverflow.com/questions/16900874/using-cjson-to-read-in-a-json-array/16901333
    else{
       cJSON *test = cJSON_Parse(chunk.memory);
-      char *string = cJSON_Print(test);
-      printf("%s\n", string);
+      string = cJSON_GetObjectItem(test,"results");
+      array = cJSON_GetArrayItem(string,i);
+      string2 = cJSON_GetObjectItem(array,"url");
       printf("%lu bytes retrieved\n",(long)chunk.size);
    }
 
@@ -72,7 +75,7 @@ int getRequest(char *URL){
    free(chunk.memory);
    curl_global_cleanup();
 
-   return 0;
+   return string2;
 }
 
 char* concatAPI(char *a, const char *b, char *c){

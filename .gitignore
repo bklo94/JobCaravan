@@ -1,8 +1,9 @@
-
+DB\.h
 API\.h
 a.exe
 a.exe.stackdump
 *.out
 *.o
 
-request
+include/DB\.h
+include/API\.h
