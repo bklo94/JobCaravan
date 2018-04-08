@@ -1,16 +1,15 @@
 #compiler and flags
 CC			= gcc
 CFLAGS	+= -Wall
-CPPFLAGS	+=-I include -lcjson
+CPPFLAGS	+= -I lib -I include -lcjson -I.
 
 #linker and flags
 LINKER	= gcc
-LIB_PATH	= -I /usr/include/postgresql
 LFLAGS	+= -I lib -I include
-LDLIBS 	+= -lm $(LIB_PATH) -lpq -lcurl
+LDLIBS 	+= -lm -I /usr/include/postgresql -lpq -lcurl
 
 #target directory and name of executable
-EXE	= bin/requests
+EXE		= bin/requests
 
 #directories
 SRCDIR	= src
@@ -21,15 +20,17 @@ SRC		= $(wildcard $(SRCDIR)/*.c)
 OBJ		= $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 rm			= rm -f
 
-.PHONY: all clean
+.PHONY: all clean .FORCE
+
+.FORCE:
 
 all: $(EXE)
 
-$(EXE): $(SRC)
-	$(CC) $(LFLAGS) $^ $(LDLIBS) -o $@
+$(EXE): $(OBJ)
+	@$(CC) $(OBJ) $(LFLAGS) $(LDLIBS) -o $@
 
-$(OBJDIR)/.o: $(SRCDIR)/%.c
-	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+$(OBJ): $(OBJDIR)/%.o: $(SRCDIR)/%.c .FORCE
+	$(CC) -c $(CFLAGS) -o $@ $< $(CPPFLAGS)
 
 clean:
 	$(rm) $(EXE)

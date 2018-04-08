@@ -45,11 +45,8 @@ cJSON* getRequest(char *URL){
    struct MemoryStruct chunk;
    chunk.memory = malloc(1);
    chunk.size = 0;
-   struct cJSON test;
-   cJSON *string, *string2, *array;
+   cJSON *string, *string2, *array, *test;
    int i = 0;
-   cJSON *elem;
-   cJSON *name;
    curl_global_init(CURL_GLOBAL_ALL);
 
    curl_handle = curl_easy_init();
@@ -64,7 +61,7 @@ cJSON* getRequest(char *URL){
    //How to iterate through a cJSON object
    //https://stackoverflow.com/questions/16900874/using-cjson-to-read-in-a-json-array/16901333
    else{
-      cJSON *test = cJSON_Parse(chunk.memory);
+      test = cJSON_Parse(chunk.memory);
       string = cJSON_GetObjectItem(test,"results");
       array = cJSON_GetArrayItem(string,i);
       string2 = cJSON_GetObjectItem(array,"url");

@@ -1,7 +1,7 @@
 #include "API.h"
 #include "requests.h"
 #include "database.h"
-#include "../lib/cJSON.h"
+#include "cJSON.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
