@@ -9,7 +9,7 @@ LFLAGS	+= -I lib -I include
 LDLIBS 	+= -lm -I /usr/include/postgresql -lpq -lcurl
 
 #target directory and name of executable
-EXE		= bin/requests
+EXE		= bin/server
 
 #directories
 SRCDIR	= src
@@ -20,7 +20,7 @@ SRC		= $(wildcard $(SRCDIR)/*.c)
 OBJ		= $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 rm			= rm -f
 
-.PHONY: all clean .FORCE
+.PHONY: all clean remove .FORCE
 
 .FORCE:
 
@@ -32,6 +32,10 @@ $(EXE): $(OBJ)
 $(OBJ): $(OBJDIR)/%.o: $(SRCDIR)/%.c .FORCE
 	$(CC) -c $(CFLAGS) -o $@ $< $(CPPFLAGS)
 
-clean:
+clean: remove
 	$(rm) $(EXE)
 	@echo "Cleanup complete!"
+
+remove:
+	$(rm) $(OBJDIR)/*.o
+	@echo "Object files removed"

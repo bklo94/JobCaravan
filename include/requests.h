@@ -1,7 +1,8 @@
 #ifndef REQUESTS_H
 #define REQUESTS_H
 
-#include "../lib/cJSON.h"
+#include "database.h"
+#include "cJSON.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -37,6 +38,25 @@ static size_t writeMemoryCallBack(void *contents, size_t size, size_t nmemb, voi
    return realsize;
 }
 
+char* concatAPI(char *a, const char *b, char *c){
+    size_t len = strlen(a) + strlen(b) + strlen(c);
+    char *str = malloc(len + 1);
+    strcpy(str,a);
+    strcat(str,b);
+    strcat(str,c);
+    return str;
+}
+
+
+char* concatThree(char *a, char *b, char *c){
+    size_t len = strlen(a) + strlen(b) + strlen(c);
+    char *str = malloc(len + 1);
+    strcpy(str,a);
+    strcat(str,b);
+    strcat(str,c);
+    return str;
+}
+
 //https://curl.haxx.se/libcurl/c/https.html
 //https://curl.haxx.se/libcurl/c/getinmemory.html
 cJSON* getRequest(char *URL){
@@ -45,8 +65,7 @@ cJSON* getRequest(char *URL){
    struct MemoryStruct chunk;
    chunk.memory = malloc(1);
    chunk.size = 0;
-   cJSON *string, *string2, *array, *test;
-   int i = 0;
+   cJSON *string, *response;
    curl_global_init(CURL_GLOBAL_ALL);
 
    curl_handle = curl_easy_init();
@@ -61,27 +80,52 @@ cJSON* getRequest(char *URL){
    //How to iterate through a cJSON object
    //https://stackoverflow.com/questions/16900874/using-cjson-to-read-in-a-json-array/16901333
    else{
-      test = cJSON_Parse(chunk.memory);
-      string = cJSON_GetObjectItem(test,"results");
-      array = cJSON_GetArrayItem(string,i);
-      string2 = cJSON_GetObjectItem(array,"url");
-      printf("%lu bytes retrieved\n",(long)chunk.size);
+      response = cJSON_Parse(chunk.memory);
+      string = cJSON_GetObjectItem(response,"results");
    }
 
    curl_easy_cleanup(curl_handle);
    free(chunk.memory);
    curl_global_cleanup();
 
-   return string2;
+   return string;
 }
 
-char* concatAPI(char *a, const char *b, char *c){
-    size_t len = strlen(a) + strlen(b) + strlen(c);
-    char *str = malloc(len + 1);
-    strcpy(str,a);
-    strcat(str,b);
-    strcat(str,c);
-    return str;
+void returnIndeed(cJSON *response){
+   cJSON *jobtitle, *company, *city, *state, *snippet, *latitude, *longitude, *url, *array;
+   //char *stringJob, *stringCompany, *stringCity, *stringState, *stringSnippet, *stringURL, *quotes = "\'";
+   for (int i =0; i < cJSON_GetArraySize(response); i++){
+      printf("%i\n\n", i);
+      array = cJSON_GetArrayItem(response,i);
+      jobtitle = cJSON_GetObjectItem(array,"jobtitle");
+      company = cJSON_GetObjectItem(array,"company");
+      city = cJSON_GetObjectItem(array,"city");
+      state = cJSON_GetObjectItem(array,"state");
+      snippet = cJSON_GetObjectItem(array,"snippet");
+      latitude = cJSON_GetObjectItem(array,"latitude");
+      longitude = cJSON_GetObjectItem(array,"longitude");
+      url = cJSON_GetObjectItem(array,"url");
+      /*
+      stringJob = concatThree(quotes,jobtitle->valuestring,quotes);
+      stringCompany = concatThree(quotes,company->valuestring,quotes);
+      stringCity = concatThree(quotes,city->valuestring,quotes);
+      stringState = concatThree(quotes,state->valuestring,quotes);
+      stringSnippet = concatThree(quotes,snippet->valuestring,quotes);
+      stringURL = concatThree(quotes,url->valuestring,quotes);
+      insertIndeedDB(stringJob, stringCompany, stringCity, stringState, stringSnippet, stringURL, longitude->valuedouble, latitude->valuedouble);
+      */
+      insertIndeedDB(jobtitle->valuestring, company->valuestring, city->valuestring, state->valuestring, snippet->valuestring, url->valuestring, longitude->valuedouble, latitude->valuedouble);
+      /*
+      printf("%s\n", jobtitle->valuestring);
+      printf("%s\n", company->valuestring);
+      printf("%s\n", city->valuestring);
+      printf("%s\n", state->valuestring);
+      printf("%s\n", snippet->valuestring);
+      printf("%s\n", url->valuestring);
+      printf("%i\n", longitude->valueint);
+      printf("%i\n", latitude->valueint);
+      */
+   }
 }
 
 #endif
