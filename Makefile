@@ -1,7 +1,7 @@
 #compiler and flags
 CC			= gcc
 CFLAGS	+= -Wall
-CPPFLAGS	+= -I lib -I include -lcjson -I.
+CPPFLAGS	+= -I lib -I include -lcjson -I. -ggdb3
 
 #linker and flags
 LINKER	= gcc

@@ -3,8 +3,7 @@ API\.h
 a.exe
 a.exe.stackdump
 *.out
-
 include/DB\.h
 include/API\.h
-
 include/pg_config_ext\.h
+vgcore*

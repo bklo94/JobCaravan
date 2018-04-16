@@ -34,13 +34,13 @@ void insertIndeedDB(char *jobtitle, char *company, char *city, char *state, char
    char buffer[1024];
    //int num = snprintf(buffer, sizeof(buffer), "INSERT INTO Indeed( jobtitle, company, city, state, snippet, url, longitutde, latitutde) VALUES(%s, %s, %s, %s, %s, %s, %lf, %lf);", jobtitle, company, city, state, PQescapeLiteral(conn,snippet,(size_t) strlen(snippet)), url, longitutde, latitude);
    int num = snprintf(buffer, sizeof(buffer), "INSERT INTO Indeed( jobtitle, company, city, state, snippet, url, longitutde, latitutde) VALUES(%s, %s, %s, %s, %s, %s, %lf, %lf);",  PQescapeLiteral(conn,jobtitle,(size_t) strlen(jobtitle)), PQescapeLiteral(conn,company,(size_t) strlen(company)), PQescapeLiteral(conn,city,(size_t) strlen(city)), PQescapeLiteral(conn,state,(size_t) strlen(state)), PQescapeLiteral(conn,snippet,(size_t) strlen(snippet)), PQescapeLiteral(conn,url,(size_t) strlen(url)), longitutde, latitude);
-   printf("%s\n", buffer);
+   //printf("%s\n", buffer);
    if (num >sizeof(buffer)){
       fprintf(stderr, "ERROR: Buffer is too small. Increase Buffer size\n");
       exit(1);
    }
 
-   PGresult *response = PQexec(conn, "CREATE TABLE IF NOT EXISTS Indeed(ID SERIAL PRIMARY KEY, jobtitle VARCHAR(255), company VARCHAR(255), city VARCHAR(50), state VARCHAR(25), snippet VARCHAR(500), url VARCHAR(500), longitutde DOUBLE PRECISION, latitutde DOUBLE PRECISION)");
+   PGresult *response = PQexec(conn, "CREATE TABLE IF NOT EXISTS Indeed(ID SERIAL PRIMARY KEY, jobtitle VARCHAR(255), company VARCHAR(255), city VARCHAR(50), state VARCHAR(25), snippet VARCHAR(500), url VARCHAR(500), longitutde DOUBLE PRECISION, latitutde DOUBLE PRECISION);");
 
    if (PQresultStatus(response) != PGRES_COMMAND_OK){
       printf("ERROR: CREATE TABLE Command failed.\n");
@@ -52,6 +52,14 @@ void insertIndeedDB(char *jobtitle, char *company, char *city, char *state, char
 
    if (PQresultStatus(response) != PGRES_COMMAND_OK){
       printf("ERROR: INSERT Command failed.\n");
+      PQclear(response);
+      do_exit(conn);
+   }
+
+   response = PQexec(conn, "DELETE FROM indeed a USING (SELECT MIN(ctid) as ctid, snippet FROM indeed GROUP BY snippet HAVING COUNT(*) > 1) b WHERE a.snippet = b.snippet AND a.ctid <> b.ctid;");
+
+   if (PQresultStatus(response) != PGRES_COMMAND_OK){
+      printf("ERROR: DELETE Command failed.\n");
       PQclear(response);
       do_exit(conn);
    }
