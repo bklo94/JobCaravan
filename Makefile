@@ -38,4 +38,5 @@ clean: remove
 
 remove:
 	$(rm) $(OBJDIR)/*.o
+	$(rm) vgcore*
 	@echo "Object files removed"

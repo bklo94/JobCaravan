@@ -11,18 +11,54 @@
 #include <fcntl.h>
 #include <sys/types.h>
 #include <curl/curl.h>
+#include <ctype.h>
 
-char *itoa(int num, char *str);
+char *fillIndeed();
+char *replaceSpaces(char*);
 
+//devug with valgrind --leak-check=full -v /bin/server
 //https://www.binarytides.com/receive-full-data-with-recv-socket-function-in-c/
 //https://stackoverflow.com/questions/22077802/simple-c-example-of-doing-an-http-post-and-consuming-the-response
 int main(int argc, char *argv[]){
-   int start = 0, end = 25, radius = 90;
-   char str2[1024];
+   char *request;
    cJSON *response, *size, *string;
-   char *jobtitle = "python+developer";
-   char *city = "san+francisco";
-   char *state = "CA";
+   request = fillIndeed();
+   response = getRequest(request);
+   size = returnIndeedSize(response);
+   returnIndeed(response);
+   return 0;
+}
+
+//TODO Create a loop to loop through all indeed results
+char *fillIndeed(){
+   int start = 0, radius = 90;
+   char str2[1024];
+   char *jobtitle = malloc(256);
+   char *city = malloc(256);
+   char *state = malloc(256);
+   if (jobtitle == NULL || state == NULL || city == NULL){
+      fprintf(stderr, "ERROR: Buffer is too small. Increase Buffer size\n");
+      exit(1);
+   }
+
+   printf("Enter the jobtitle: ");
+   fgets(jobtitle, 256, stdin);
+   if ((strlen(jobtitle) > 0) && (jobtitle[strlen (jobtitle) - 1] == '\n'))
+      jobtitle[strlen (jobtitle) - 1] = '\0';
+   jobtitle = replaceSpaces(jobtitle);
+
+   printf("Enter the city: ");
+   fgets(city, 256, stdin);
+   if ((strlen(city) > 0) && (city[strlen (city) - 1] == '\n'))
+      city[strlen (city) - 1] = '\0';
+   city = replaceSpaces(city);
+
+   printf("Enter the State: ");
+   fgets(state, 256, stdin);
+   if ((strlen(state) > 0) && (state[strlen (state) - 1] == '\n'))
+      state[strlen (state) - 1] = '\0';
+   state = replaceSpaces(state);
+
    char *jobType = "fulltime";
    char *Firefox1 = "%2F";
    char *Firefox2 = "%28F";
@@ -33,12 +69,18 @@ int main(int argc, char *argv[]){
       exit(1);
    }
    char *request = concatAPI(str1,INDEED_KEY,str2);
-   response = getRequest(request);
-   size = returnIndeedSize(response);
-   returnIndeed(response);
-   return 0;
+
+   return request;
 }
 
-void fillIndeed(){
-
+char *replaceSpaces(char* string){
+   size_t len = strlen(string);
+   char *temp = malloc(len+1);
+   strncpy(temp,string, len);
+   for(int i = 0; i < strlen(temp); i++){
+      if(isspace(temp[i]))
+         temp[i] = '+';
+   }
+   string = temp;
+   return string;
 }

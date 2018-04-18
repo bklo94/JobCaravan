@@ -39,8 +39,10 @@ void insertIndeedDB(char *jobtitle, char *company, char *city, char *state, char
       fprintf(stderr, "ERROR: Buffer is too small. Increase Buffer size\n");
       exit(1);
    }
+   //supresses a notice of the table already existing
+   PGresult *response = PQexec(conn, "SET client_min_messages = error;");
 
-   PGresult *response = PQexec(conn, "CREATE TABLE IF NOT EXISTS Indeed(ID SERIAL PRIMARY KEY, jobtitle VARCHAR(255), company VARCHAR(255), city VARCHAR(50), state VARCHAR(25), snippet VARCHAR(500), url VARCHAR(500), longitutde DOUBLE PRECISION, latitutde DOUBLE PRECISION);");
+   response = PQexec(conn, "CREATE TABLE IF NOT EXISTS Indeed(ID SERIAL PRIMARY KEY, jobtitle VARCHAR(255), company VARCHAR(255), city VARCHAR(50), state VARCHAR(25), snippet VARCHAR(500), url VARCHAR(500), longitutde DOUBLE PRECISION, latitutde DOUBLE PRECISION);");
 
    if (PQresultStatus(response) != PGRES_COMMAND_OK){
       printf("ERROR: CREATE TABLE Command failed.\n");

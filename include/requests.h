@@ -102,10 +102,10 @@ cJSON* getRequest(char *URL){
 }
 
 void returnIndeed(cJSON *response){
+   int i;
    cJSON *jobtitle, *company, *city, *state, *snippet, *latitude, *longitude, *url, *array;
    response = cJSON_GetObjectItem(response,"results");
-   for (int i =0; i < cJSON_GetArraySize(response); i++){
-      printf("%i ", i);
+   for (i =0; i < cJSON_GetArraySize(response); i++){
       array = cJSON_GetArrayItem(response,i);
       jobtitle = cJSON_GetObjectItem(array,"jobtitle");
       company = cJSON_GetObjectItem(array,"company");
@@ -117,11 +117,12 @@ void returnIndeed(cJSON *response){
       url = cJSON_GetObjectItem(array,"url");
       insertIndeedDB(jobtitle->valuestring, company->valuestring, city->valuestring, state->valuestring, snippet->valuestring, url->valuestring, longitude->valuedouble, latitude->valuedouble);
    }
+   printf("%i\n", i);
 }
 
 cJSON *returnIndeedSize(cJSON *response){
    cJSON *size = cJSON_GetObjectItem(response,"totalResults");
-   printf("%i\n", cJSON_GetObjectItem(response,"totalResults")->valueint);
+   //printf("%i\n", cJSON_GetObjectItem(response,"totalResults")->valueint);
    return size;
 }
 
