@@ -67,7 +67,7 @@ cJSON* getRequest(char *URL){
    chunk.size = 0;
    cJSON *response;
    curl_global_init(CURL_GLOBAL_ALL);
-   //printf("%s\n", URL);
+   printf("%s\n", URL);
    curl_handle = curl_easy_init();
    curl_easy_setopt(curl_handle, CURLOPT_URL,URL);
    curl_easy_setopt(curl_handle,CURLOPT_WRITEFUNCTION,writeMemoryCallBack);

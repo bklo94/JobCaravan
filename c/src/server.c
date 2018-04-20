@@ -39,6 +39,7 @@ int main(int argc, char *argv[]){
       returnIndeed(response);
       end = size;
       start+= 25;
+      printf("%i, %i\n", start, end);
    } while(start <= end);
    return 0;
 }

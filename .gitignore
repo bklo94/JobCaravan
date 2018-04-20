@@ -8,3 +8,5 @@ include/API\.h
 include/pg_config_ext\.h
 vgcore*
 *.gch
+
+react/src/dbcon\.js
