@@ -1,0 +1,16 @@
+{% if jobList %}
+    <table style="width:100%">
+    {% for jobs in jobList %}
+    <tr>
+      <th>{{jobs.jobtitle}}</th>
+      <th>{{jobs.company}}</th>
+      <th>{{jobs.city}}</th>
+      <th>{{jobs.state}}</th>
+      <th>{{jobs.snippet}}</th>
+      <th>{{jobs.url}}</th>
+    </tr>
+    {% endfor %}
+    <table style="width:100%">
+{% else %}
+    <p>No jobs are available.</p>
+{% endif %}

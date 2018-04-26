@@ -1,28 +1,33 @@
+#https://python-visualization.github.io/folium/docs-v0.5.0/plugins.html#folium-plugins
+#https://nbviewer.jupyter.org/gist/anonymous/33f38b09ad3bfa277e2d9c06e4bb588c
+
+import flask
+import datetime
 import folium
-from folium.plugins import MarkerCluster
+from folium.plugins import FastMarkerCluster
 import os
+import geojson
 
-m = folium.Map(location=[44, -73], zoom_start=5)
+map_1 = folium.Map(location= [38, 119])
+map_2 = folium.Map(location= [38, 119])
 
-marker_cluster = MarkerCluster().add_to(m)
+# data format
+lines = [
+    [[38,119],[39,120],[40,119]],
+    [[38,119],[39,120],[40,119]]]
 
+# map_1
+feature_all = []
+for i, each in enumerate(lines):
+    polygon_i = geojson.Polygon(tuple([each, ]))
+    property_i = {'Idx': str(i)}
+    feature_i = geojson.Feature(id=str(i),
+                                geometry=polygon_i,
+                                properties=property_i)
+    feature_all.append(feature_i)
 
-folium.Marker(
-    location=[40.67, -73.94],
-    popup='Add popup text here.',
-    icon=folium.Icon(color='green', icon='ok-sign'),
-).add_to(marker_cluster)
-
-folium.Marker(
-    location=[44.67, -73.94],
-    popup='Add popup text here.',
-    icon=folium.Icon(color='red', icon='remove-sign'),
-).add_to(marker_cluster)
-
-folium.Marker(
-    location=[44.67, -71.94],
-    popup='Add popup text here.',
-    icon=None,
-).add_to(marker_cluster)
-
-m.save('1000_MarkerCluster0.html')
+feature_all = geojson.FeatureCollection(feature_all)
+folium.GeoJson(feature_all,style_function=lambda feature:
+               {'fillColor': None,'weight': 0.8,'line_opacity': 0.8, }).add_to(map_1)
+# map_2
+folium.PolyLine(lines,weight=0.8,line_opacity=0.8).add_to(map_2)
