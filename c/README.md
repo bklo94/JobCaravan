@@ -1,5 +1,7 @@
-JobSpace
+JobSpace Back End
 ======
 Development In progress.
 
-Check out the progress [here](https://trello.com/b/rfKXhLqN/jobcaravan).
+Requests are completed here and uploaded to postgres.
+
+Check out the progress above under the project tab!

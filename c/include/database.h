@@ -10,6 +10,7 @@
 #include <sys/types.h>
 #include <libpq-fe.h>
 
+//How to setup the database 
 //http://zetcode.com/db/postgresqlc/
 
 void do_exit(PGconn *conn){

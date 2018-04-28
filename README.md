@@ -2,4 +2,4 @@ JobSpace
 ======
 Development In progress.
 
-Check out the progress [here](https://trello.com/b/rfKXhLqN/jobcaravan).
+Check out the progress above under the project tab!
