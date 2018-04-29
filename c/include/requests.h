@@ -103,7 +103,7 @@ cJSON* getRequest(char *URL){
 
 void returnIndeed(cJSON *response){
    int i;
-   cJSON *jobtitle, *company, *city, *state, *snippet, *latitude, *longitude, *url, *array;
+   cJSON *jobtitle, *company, *city, *state, *snippet, *latitude, *longitude, *url, *array, *relDate, *postDate;
    response = cJSON_GetObjectItem(response,"results");
    for (i =0; i < cJSON_GetArraySize(response); i++){
       array = cJSON_GetArrayItem(response,i);
@@ -115,7 +115,9 @@ void returnIndeed(cJSON *response){
       latitude = cJSON_GetObjectItem(array,"latitude");
       longitude = cJSON_GetObjectItem(array,"longitude");
       url = cJSON_GetObjectItem(array,"url");
-      insertIndeedDB(jobtitle->valuestring, company->valuestring, city->valuestring, state->valuestring, snippet->valuestring, url->valuestring, longitude->valuedouble, latitude->valuedouble);
+      relDate = cJSON_GetObjectItem(array,"formattedRelativeTime");
+      postDate = cJSON_GetObjectItem(array,"date");
+      insertIndeedDB(jobtitle->valuestring, company->valuestring, city->valuestring, state->valuestring, snippet->valuestring, url->valuestring, longitude->valuedouble, latitude->valuedouble, relDate->valuestring, postDate->valuestring);
    }
 }
 
