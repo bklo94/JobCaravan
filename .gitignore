@@ -12,3 +12,5 @@ vgcore*
 react/src/dbcon\.js
 
 python/JobCaravan/
+
+*.pyc
