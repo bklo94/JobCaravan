@@ -59,7 +59,7 @@ void insertIndeedDB(char *jobtitle, char *company, char *city, char *state, char
       do_exit(conn);
    }
 
-   response = PQexec(conn, "DELETE FROM indeed a USING (SELECT MIN(ctid) as ctid, url FROM indeed GROUP BY url HAVING COUNT(*) > 1) b WHERE a.url = b.url AND a.ctid <> b.ctid;");
+   response = PQexec(conn, "DELETE FROM indeed a USING (SELECT MIN(ctid) as ctid, snippet, jobtitle FROM indeed GROUP BY snippet, jobtitle HAVING COUNT(*) > 1) b WHERE a.jobtitle = b.jobtitle AND a.snippet = b.snippet AND a.ctid <> b.ctid;");
 
    if (PQresultStatus(response) != PGRES_COMMAND_OK){
       printf("ERROR: DELETE Command failed.\n");
