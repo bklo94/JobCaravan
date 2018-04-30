@@ -1,15 +1,7 @@
 from django.db import models
-
+from django.db.models import F
+import unittest
 # Create your models here.
-class Bucketlist(models.Model):
-    """This class represents the bucketlist model."""
-    name = models.CharField(max_length=255, blank=False, unique=True)
-    date_created = models.DateTimeField(auto_now_add=True)
-    date_modified = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        """Return a human readable representation of the model instance."""
-        return "{}".format(self.name)
 
 class Indeed(models.Model):
     jobtitle = models.CharField(max_length=255, blank=True, null=True)
@@ -22,6 +14,9 @@ class Indeed(models.Model):
     latitutde = models.FloatField(blank=True, null=True)
     reldate = models.CharField(max_length=255, blank=True, null=True)
     postdate = models.CharField(max_length=255, blank=True, null=True)
+    def updateDB(self):
+        obj = Indeed.objects.first()
+        obj.refresh_from_db()
     def __str__(self):
         template = '{0.jobtitle} {0.company} {0.city} {0.state} {0.snippet} {0.url} {0.reldate} {0.postdate}'
         return template.format(self)
