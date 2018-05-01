@@ -29,12 +29,12 @@ PGconn *connectDB(){
    return conn;
 }
 
-void insertIndeedDB(char *jobtitle, char *company, char *city, char *state, char *snippet, char *url, double longitutde, double latitude, char *relDate, char *postDate){
+void insertIndeedDB(char *jobtitle, char *company, char *city, char *state, char *snippet, char *url, double longitude, double latitude, char *relDate, char *postDate){
    PGconn* conn = connectDB();
 
    char buffer[1024];
-   //int num = snprintf(buffer, sizeof(buffer), "INSERT INTO Indeed( jobtitle, company, city, state, snippet, url, longitutde, latitutde) VALUES(%s, %s, %s, %s, %s, %s, %lf, %lf);", jobtitle, company, city, state, PQescapeLiteral(conn,snippet,(size_t) strlen(snippet)), url, longitutde, latitude);
-   int num = snprintf(buffer, sizeof(buffer), "INSERT INTO Indeed( jobtitle, company, city, state, snippet, url, longitutde, latitutde, relDate, postDate) VALUES(%s, %s, %s, %s, %s, %s, %lf, %lf, %s, %s);",  PQescapeLiteral(conn,jobtitle,(size_t) strlen(jobtitle)), PQescapeLiteral(conn,company,(size_t) strlen(company)), PQescapeLiteral(conn,city,(size_t) strlen(city)), PQescapeLiteral(conn,state,(size_t) strlen(state)), PQescapeLiteral(conn,snippet,(size_t) strlen(snippet)), PQescapeLiteral(conn,url,(size_t) strlen(url)), longitutde, latitude, PQescapeLiteral(conn,relDate,(size_t) strlen(relDate)), PQescapeLiteral(conn,postDate,(size_t) strlen(postDate)));
+   //int num = snprintf(buffer, sizeof(buffer), "INSERT INTO Indeed( jobtitle, company, city, state, snippet, url, longitude, latitutde) VALUES(%s, %s, %s, %s, %s, %s, %lf, %lf);", jobtitle, company, city, state, PQescapeLiteral(conn,snippet,(size_t) strlen(snippet)), url, longitude, latitude);
+   int num = snprintf(buffer, sizeof(buffer), "INSERT INTO Indeed( jobtitle, company, city, state, snippet, url, longitude, latitutde, relDate, postDate) VALUES(%s, %s, %s, %s, %s, %s, %lf, %lf, %s, %s);",  PQescapeLiteral(conn,jobtitle,(size_t) strlen(jobtitle)), PQescapeLiteral(conn,company,(size_t) strlen(company)), PQescapeLiteral(conn,city,(size_t) strlen(city)), PQescapeLiteral(conn,state,(size_t) strlen(state)), PQescapeLiteral(conn,snippet,(size_t) strlen(snippet)), PQescapeLiteral(conn,url,(size_t) strlen(url)), longitude, latitude, PQescapeLiteral(conn,relDate,(size_t) strlen(relDate)), PQescapeLiteral(conn,postDate,(size_t) strlen(postDate)));
    //printf("%s\n", buffer);
    if (num >sizeof(buffer)){
       fprintf(stderr, "ERROR: Buffer is too small. Increase Buffer size\n");
@@ -43,7 +43,7 @@ void insertIndeedDB(char *jobtitle, char *company, char *city, char *state, char
    //supresses a notice of the table already existing
    PGresult *response = PQexec(conn, "SET client_min_messages = error;");
 
-   response = PQexec(conn, "CREATE TABLE IF NOT EXISTS Indeed(ID SERIAL PRIMARY KEY, jobtitle VARCHAR(255), company VARCHAR(255), city VARCHAR(50), state VARCHAR(25), snippet VARCHAR(500), url VARCHAR(500), longitutde DOUBLE PRECISION, latitutde DOUBLE PRECISION, relDate VARCHAR(255), postDate VARCHAR(255));");
+   response = PQexec(conn, "CREATE TABLE IF NOT EXISTS Indeed(ID SERIAL PRIMARY KEY, jobtitle VARCHAR(255), company VARCHAR(255), city VARCHAR(50), state VARCHAR(25), snippet VARCHAR(500), url VARCHAR(500), longitude DOUBLE PRECISION, latitutde DOUBLE PRECISION, relDate VARCHAR(255), postDate VARCHAR(255));");
 
    if (PQresultStatus(response) != PGRES_COMMAND_OK){
       printf("ERROR: CREATE TABLE Command failed.\n");

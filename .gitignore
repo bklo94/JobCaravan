@@ -14,3 +14,5 @@ react/src/dbcon\.js
 python/JobCaravan/
 
 *.pyc
+
+python/api/db\.py
