@@ -16,3 +16,5 @@ python/JobCaravan/
 *.pyc
 
 python/api/db\.py
+
+python/api/dbkeys\.py

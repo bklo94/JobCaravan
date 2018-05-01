@@ -10,8 +10,8 @@ class Indeed(models.Model):
     state = models.CharField(max_length=25, blank=True, null=True)
     snippet = models.CharField(max_length=500, blank=True, null=True)
     url = models.CharField(max_length=500, blank=True, null=True)
-    longitutde = models.FloatField(blank=True, null=True)
-    latitutde = models.FloatField(blank=True, null=True)
+    longitude = models.FloatField(blank=True, null=True)
+    latitude = models.FloatField(blank=True, null=True)
     reldate = models.CharField(max_length=255, blank=True, null=True)
     postdate = models.CharField(max_length=255, blank=True, null=True)
     def updateDB(self):
