@@ -16,5 +16,5 @@ def index(request):
         'jobList': jobList,
     }
     length = len(jobList)
-    print (length)
+    print ("Number of Jobs -", length)
     return HttpResponse(template.render(context, request))
