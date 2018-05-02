@@ -13,7 +13,7 @@ import pprint
 import dbkeys
 
 def map(arr):
-    map_1 = folium.Map(location= [37.7749,-122.4194], tiles='https://api.mapbox.com/styles/v1/bklo94/cjgnfcaf300052rqnzy8vryd4/tiles/256/{z}/{x}/{y}?access_token='+dbkeys.mapboxAPI, zoom_start=8, prefer_canvas=True,attr='Maxbox Data Attribution')
+    map_1 = folium.Map(location= [39.8283,-98.5795], tiles='https://api.mapbox.com/styles/v1/bklo94/cjgnfcaf300052rqnzy8vryd4/tiles/256/{z}/{x}/{y}?access_token='+dbkeys.mapboxAPI, zoom_start=4, prefer_canvas=True,attr='Maxbox Data Attribution')
     list = []
     for i in arr:
         list.append([[i[0]],[i[1]]])

@@ -42,11 +42,15 @@ def table(request):
         #Format the date
         temp = target.postdate
         tempArr = getWords(temp)
-        tempArr[2] = convertMonth(tempArr[2])
-        dateFormat = tempArr[2] + "-" + tempArr[1] +"-"+ tempArr[3]
-        target.postdate= dateFormat
-        #save the data
-        target.save()
+        if (len(tempArr) == 3):
+            target.save()
+            break
+        else:
+            tempArr[2] = convertMonth(tempArr[2])
+            dateFormat = tempArr[2] + "-" + tempArr[1] +"-"+ tempArr[3]
+            target.postdate= dateFormat
+            #save the data
+            target.save()
 
     jobList = list(Indeed.objects.all())
     template = loader.get_template('indeed/table.html')
