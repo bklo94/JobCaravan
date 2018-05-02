@@ -64,5 +64,8 @@ def table(request):
 def map(request):
     return render(request,'indeed/map.html')
 
+def main(request):
+    return render(request,'indeed/main.html')
+
 def index(request):
     return render(request,'indeed/index.html')
