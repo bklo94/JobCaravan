@@ -11,9 +11,20 @@ import psycopg2
 import sys
 import pprint
 import dbkeys
+import urllib.request
+import json
+
+def getIP():
+    with urllib.request.urlopen("https://geoip-db.com/json") as url:
+        data = json.loads(url.read().decode())
+    return [data['latitude'], data['longitude']]
 
 def map(arr):
-    map_1 = folium.Map(location= [39.8283,-98.5795], tiles='https://api.mapbox.com/styles/v1/bklo94/cjgnfcaf300052rqnzy8vryd4/tiles/256/{z}/{x}/{y}?access_token='+dbkeys.mapboxAPI, zoom_start=4, prefer_canvas=True,attr='Maxbox Data Attribution')
+    userLocation = getIP()
+    if userLocation:
+        map_1 = folium.Map(location= userLocation, tiles='https://api.mapbox.com/styles/v1/bklo94/cjgnfcaf300052rqnzy8vryd4/tiles/256/{z}/{x}/{y}?access_token='+dbkeys.mapboxAPI, zoom_start=10, prefer_canvas=True,attr='Maxbox Data Attribution')
+    else:
+        map_1 = folium.Map(location= [39.8283,-98.5795], tiles='https://api.mapbox.com/styles/v1/bklo94/cjgnfcaf300052rqnzy8vryd4/tiles/256/{z}/{x}/{y}?access_token='+dbkeys.mapboxAPI, zoom_start=4, prefer_canvas=True,attr='Maxbox Data Attribution')
     list = []
     for i in arr:
         list.append([[i[0]],[i[1]]])
