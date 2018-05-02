@@ -1,20 +1,50 @@
-<!doctype html>
-{% load static %}
-<html lang="en">
-<head>
-   <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!DOCTYPE html>
 
-    <!-- Bootstrap CSS -->
+{% load static %}
+<html>
+  <head>
+    <style>
+    </style>
+    <title>Bootstrap Template</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel='stylesheet' type='text/css' href="{% static '/css/style.css' %}" />
-    <title>JobCaravan: Transporting you from unemployment to employment! </title>
-</head>
-<body>
-   <iframe class="box" src="table" style="overflow: hidden; border:none; width: 50%; float: right;" height="100%" width="50%" align="right"></iframe>
-   <iframe class="box" src="map" style="overflow: hidden; border:none; position:fixed" height="100%" width="49%" align="left"></iframe>
-   <!-- Optional JavaScript -->
-   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-</body>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+     <a class="navbar-brand" href="http://127.0.0.1:8000/">JobCaravan</a>
+     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+     </button>
+     </button>
+      <ul class="navbar-nav mr-auto">
+         <li class="nav-item active">
+          <a class="nav-link" href="http://127.0.0.1:8000/main">Indeed</a>
+         </li>
+         <li class="nav-item">
+          <a class="nav-link" href="http://127.0.0.1:8000/table">Table</a>
+         </li>
+         <li class="nav-item">
+          <a class="nav-link disabled" href="http://127.0.0.1:8000/map">Map</a>
+         </li>
+      </ul>
+      <div class="btn-toolbar">
+         <form class="form-inline my-2 my-lg-0">
+         <input class="form-control mr-sm-2" type="search" placeholder="Python Developer" aria-label="Search">
+         <button class="btn btn-dark my-2 my-sm-0" type="submit">Search</button>
+        </form>
+        <a class="btn btn-dark my-2 my-sm-0" href="">Login</a>
+      </div>
+   </nav>
+
+   <title>JobCaravan: Transporting you from unemployment to employment! </title>
+  </head>
+  <body>
+  <div class="jumbotron" id="homePage">
+    <div class="container">
+      <h1>Job Caravan</h1>
+      <h3>Transporting you from unemployment to employment! </h3>
+      <p class="lead">Created By Brandon Lo</p>
+    </div>
+  </div>
+  </body>
+</html>

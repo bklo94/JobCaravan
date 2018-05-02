@@ -18,8 +18,24 @@ table.tablesorter thead tr .headerSortDown {
     margin-right:20px;
 }
 
+iframe {
+    height: 94%;
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+    display: block;
+    overflow: auto;
+}
+
 html,body{
   width: 100%;
   height: 100%;
-  background-color: black;
+  margin: 0px;
+  padding: 0px;
+  border: 0px;
+  background-color: #212121;
+}
+
+#homePage{
+   background-color: #3E4551;
 }
