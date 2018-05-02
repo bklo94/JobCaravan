@@ -1,4 +1,5 @@
 <!doctype html>
+{% load static %}
 <html lang="en">
 <head>
    <!-- Required meta tags -->
@@ -7,56 +8,13 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script type="text/javascript" src="static/tablesorter/jquery.tablesorter.js"></script>
-    <link rel="stylesheet" type="text/css" href="static/indeed/style.css">
-
-    <script type="text/javascript">
-    $(document).ready(function()
-    {
-         $("#myTable").tablesorter( {sortList: [[0,0], [1,0]]} );
-    }
-    );
-    </script>
-
-    <title>JobCaravan: Transporting you to your next job!</title>
+    <link rel='stylesheet' type='text/css' href="{% static '/css/style.css' %}" />
+    <title>JobCaravan: Transporting you from unemployment to employment! </title>
 </head>
 <body>
-   {% if jobList %}
-       <table class="table table-bordered table-striped table-dark table-hover tablesorter" id = "myTable" style="width:100%">
-       <thead>
-          <tr>
-             <th scope="col">Job Title</th>
-             <th scope="col">Company</th>
-             <th scope="col">City</th>
-             <th scope="col">State</th>
-             <th scope="col">Snippet</th>
-             <th scope="col">URL</th>
-             <th scope="col">Relative Date</th>
-             <th scope="col">Posted Date</th>
-          </tr>
-        </thead>
-        <tbody>
-       {% for jobs in jobList %}
-       <tr>
-         <td scope="row">{{jobs.jobtitle}}</td>
-         <td>{{jobs.company}}</td>
-         <td>{{jobs.city}}</td>
-         <td>{{jobs.state}}</td>
-         <td>{{jobs.snippet}}</td>
-         <td> <a href={{jobs.url}}> Indeed Link </td>
-         <td>{{jobs.reldate}}</td>
-         <td>{{jobs.postdate}}</td>
-       </tr>
-       {% endfor %}
-       </tbody>
-       </table>
-   {% else %}
-       <p>No jobs are available.</p>
-   {% endif %}
-
+   <iframe class="box" src="table" style="overflow: hidden; border:none; width: 50%; float: right;" height="100%" width="50%" align="right"></iframe>
+   <iframe class="box" src="map" style="overflow: hidden; border:none; position:fixed" height="100%" width="49%" align="left"></iframe>
    <!-- Optional JavaScript -->
    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>

@@ -56,7 +56,7 @@ struct InInput fillIndeed(int start, struct InInput temp){
       fprintf(stderr, "ERROR: Buffer is too small. Increase Buffer size\n");
       exit(1);
    }
-
+   for
    if (start == 0){
       printf("Enter the jobtitle: ");
       fgets(jobtitle, 256, stdin);
