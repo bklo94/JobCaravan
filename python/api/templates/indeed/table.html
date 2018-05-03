@@ -9,22 +9,38 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script type="text/javascript" src="{% static '/tablesorter/jquery.tablesorter.js' %} "></script>
-    <link rel='stylesheet' type='text/css' href="{% static '/css/style.css' %}" />
+    <link rel='stylesheet' type='text/css' href="{% static '/css/style.css' %}" >
 
+     <!-- Datatables JS -->
+    <script type="text/javascript" src="{% static '/DataTables/DataTables/js/jquery.dataTables.min.js' %}"></script>
+    <script type="text/javascript" src="{% static '/DataTables/DataTables/js/dataTables.bootstrap.min.js' %}"></script>
+    <script  type="text/javascript" src="{% static '/DataTables/Responsive/js/dataTables.responsive.min.js' %}"></script>
+    <script type="text/javascript" src="{% static '/DataTables/Responsive/js/responsive.bootstrap.min.js' %}"></script>
+
+    <!-- Datatables CSS -->
+    <link rel='stylesheet' src="{% static '/DataTables/DataTables/css/dataTables.bootstrap4.min.css' %}">
+    <link rel='stylesheet' src="{% static '/DataTables/Responsive/css/responsive.bootstrap4.min.css' %}">
     <script type="text/javascript">
-    $(document).ready(function()
-    {
-         $("#myTable").tablesorter( {sortList: [[0,0], [1,0]]} );
-    }
-    );
+    $(document).ready(function(){
+      $('#myTable').DataTable({
+         "pagingType": "simple_numbers",
+         'sDom': '<fit>',
+         'paging': false,
+         'scrollCollapse' : true,
+         'responsive': true,
+         'fixedHeader': true,
+         'scrollX': false,
+         "sScrollX": "99%",
+         });
+      });
     </script>
 
     <title>JobCaravan: Transporting you from unemployment to employment! </title>
 </head>
 <body>
+   <div class="datatable-wide">
    {% if jobList %}
-       <table class="table table-bordered table-striped table-dark table-hover tablesorter" id = "myTable">
+       <table class="table table-bordered table-striped table-dark table-hover dt-responsive nowrap container-fluid dt-bootstrap4" id = "myTable">
        <thead>
           <tr>
              <th scope="col">Job Title</th>
@@ -51,6 +67,7 @@
        </tbody>
        </table>
        </iframe>
+    </div>
    {% else %}
        <p>No jobs are available.</p>
    {% endif %}
