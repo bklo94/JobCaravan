@@ -121,8 +121,63 @@ void returnIndeed(cJSON *response){
    }
 }
 
+void returnAdzuna(cJSON *response){
+   int i;
+   cJSON *jobtitle, *company, *city, *state, *snippet, *latitude, *longitude, *url, *array, *postDate;
+   response = cJSON_GetObjectItem(response,"results");
+   for (i =0; i < cJSON_GetArraySize(response); i++){
+      array = cJSON_GetArrayItem(response,i);
+      jobtitle = cJSON_GetObjectItem(array,"title");
+      company = cJSON_GetObjectItem(array,"company");
+      if (cJSON_GetObjectItem(company,"display_name") == NULL){
+         company = cJSON_GetObjectItem(array,"title");
+      }
+      else{
+         company = cJSON_GetObjectItem(company,"display_name");
+      }
+      snippet = cJSON_GetObjectItem(array,"description");
+      latitude = cJSON_GetObjectItem(array,"latitude");
+      longitude = cJSON_GetObjectItem(array,"longitude");
+      url = cJSON_GetObjectItem(array,"redirect_url");
+      postDate = cJSON_GetObjectItem(array,"created");
+      city = cJSON_GetObjectItem(array,"location");
+      city = cJSON_GetObjectItem(city,"area");
+      if (cJSON_GetArraySize(city) == 4){
+         city = cJSON_GetArrayItem(city,3);
+         state = cJSON_GetObjectItem(array,"location");
+         state = cJSON_GetObjectItem(state,"area");
+         state = cJSON_GetArrayItem(state,1);
+      }
+      else if (cJSON_GetArraySize(city) == 3){
+         city = cJSON_GetArrayItem(city,2);
+         state = cJSON_GetObjectItem(array,"location");
+         state = cJSON_GetObjectItem(state,"area");
+         state = cJSON_GetArrayItem(state,1);
+      }
+      else if (cJSON_GetArraySize(city) == 2){
+         city = cJSON_GetArrayItem(city,1);
+         state = cJSON_GetObjectItem(array,"location");
+         state = cJSON_GetObjectItem(state,"area");
+         state = cJSON_GetArrayItem(state,1);
+      }
+      else{
+         city = cJSON_GetArrayItem(city,0);
+         state = cJSON_GetObjectItem(array,"location");
+         state = cJSON_GetObjectItem(state,"area");
+         state = cJSON_GetArrayItem(state,1);
+      }
+      insertAdzunaDB(jobtitle->valuestring, company->valuestring, city->valuestring, state->valuestring, snippet->valuestring, url->valuestring, longitude->valuedouble, latitude->valuedouble, postDate->valuestring);
+   }
+}
+
+
 int returnIndeedSize(cJSON *response){
    cJSON *size = cJSON_GetObjectItem(response,"totalResults");
+   return size->valueint;
+}
+
+int returnAdzunaSize(cJSON *response){
+   cJSON *size = cJSON_GetObjectItem(response,"count");
    return size->valueint;
 }
 

@@ -1,6 +1,6 @@
 #compiler and flags
 CC			= gcc
-CFLAGS	+= -Wall
+CFLAGS	+= -Wall -Wno-unused-variable
 CPPFLAGS	+= -I lib -I include -lcjson -I. -ggdb3
 
 #linker and flags

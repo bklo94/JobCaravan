@@ -40,6 +40,7 @@ def getPop():
     cursor = conn.cursor()
     cursor.execute("SELECT indeed.jobtitle, indeed.company, indeed.snippet, indeed.url, indeed.postdate FROM indeed")
     arr = cursor.fetchall()
+    #TODO Attempt to Parallelize here
     for i in arr:
         dict = {}
         dict['jobtitle'] = replaceApo(i[0])
@@ -49,7 +50,7 @@ def getPop():
         list.append(dict)
     return list
 
-def map(coordArr,popDict):
+def getMap(coordArr,popDict):
     userLocation = getIP()
     #tiles='https://api.mapbox.com/styles/v1/bklo94/cjgnfcaf300052rqnzy8vryd4/tiles/256/{z}/{x}/{y}?access_token='+dbkeys.mapboxAPI
     if userLocation:
@@ -57,6 +58,7 @@ def map(coordArr,popDict):
     else:
         map_1 = folium.Map(location= [39.8283,-98.5795], tiles='https://api.mapbox.com/styles/v1/bklo94/cjgnfcaf300052rqnzy8vryd4/tiles/256/{z}/{x}/{y}?access_token='+dbkeys.mapboxAPI, zoom_start=4, prefer_canvas=True,attr='Maxbox Data Attribution')
     mc = MarkerCluster().add_to(map_1)
+    #Another possible place to Parallelize
     for i in range(0,len(coordArr)):
         job = "<b>Job:</b>{}</br>".format(popDict[i]['jobtitle'])
         company = "<b>Company:</b>{}</br>".format(popDict[i]['company'])
@@ -72,7 +74,7 @@ def map(coordArr,popDict):
 def main():
     coords = getCoord()
     popups = getPop()
-    map(coords,popups)
+    getMap(coords,popups)
 
 if __name__ == "__main__":
     main()

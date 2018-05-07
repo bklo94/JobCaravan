@@ -1,7 +1,6 @@
 from django.db import models
 from django.db.models import F
 import unittest
-# Create your models here.
 
 class Indeed(models.Model):
     jobtitle = models.CharField(max_length=255, blank=True, null=True)
