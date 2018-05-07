@@ -27,6 +27,14 @@ struct AdzInput{
    char *response;
 };
 
+struct AutInput{
+   char *jobtitle;
+   char *city;
+   char *state;
+   char *response;
+};
+
+struct AutInput fillAuthentic(char*, struct AutInput);
 struct AdzInput fillAdzuna(int, char*, char*, char *, struct AdzInput);
 struct InInput fillIndeed(int, char*, char*, char *,struct InInput);
 char *replaceSpaces(char*);
@@ -41,6 +49,7 @@ int main(int argc, char *argv[]){
    cJSON *response;
    struct InInput Indeed;
    struct AdzInput Adzuna;
+   struct AutInput AuthenticJobs;
    char *jobtitle = malloc(256);
    char *city = malloc(256);
    char *state = malloc(256);
@@ -48,7 +57,7 @@ int main(int argc, char *argv[]){
 
    if(testKey == 0){
       if (jobtitle == NULL || state == NULL || city == NULL){
-         fprintf(stderr, "ERROR: Buffer is too small. Increase Buffer size\n");
+         fprintf(stderr, "ERROR server.c: Buffer is too small. Increase Buffer size\n");
          exit(1);
       }
       if (start == 1){
@@ -74,6 +83,11 @@ int main(int argc, char *argv[]){
       city = "San+Francisco";
       state = "CA";
    }
+
+   //Authentic has almost no Software dev jobs... So no need to loop
+   AuthenticJobs = fillAuthentic(jobtitle,AuthenticJobs);
+   response = getRequest(AuthenticJobs.response);
+   returnAuthentic(response);
 
    do {
       Adzuna = fillAdzuna(start, jobtitle, city, state, Adzuna);
@@ -108,13 +122,13 @@ struct AdzInput fillAdzuna(int start, char* jobtitle, char* city, char *state,st
    temp.state = state;
    int num = snprintf(str1, 1024, "api.adzuna.com/v1/api/jobs/us/search/%i?app_id=",start);
    if (num >sizeof(str1)){
-      fprintf(stderr, "ERROR: Buffer is too small. Increase Buffer size\n");
+      fprintf(stderr, "ERROR server.c: Buffer is too small. Increase Buffer size\n");
       exit(1);
    }
    char *str2 = "&app_key=";
    num = snprintf(str3, 1024, "&results_per_page=1000&what=%s&where=%s+%s&distance=200&full_time=1",jobtitle, city, state);
    if (num >sizeof(str3)){
-      fprintf(stderr, "ERROR: Buffer is too small. Increase Buffer size\n");
+      fprintf(stderr, "ERROR server.c: Buffer is too small. Increase Buffer size\n");
       exit(1);
    }
    char *request = concatAPI(str1,ADZUNA_APPID,str2);
@@ -137,7 +151,7 @@ struct InInput fillIndeed(int start, char* jobtitle, char* city, char *state, st
    char *str1 = "api.indeed.com/ads/apisearch?publisher=";
    int num = snprintf(str2, 1024, "&q=%s&l=%s+%s&sort=&radius=%i&st=&jt=%s&start=%i&limit=25&fromage=&filter=&latlong=1&co=us&chnl=&userip=&useragent=Mozilla/%s4.0%s(Firefox)&v=2&format=json",jobtitle, city, state, radius, jobType, start, Firefox1, Firefox2);
    if (num >sizeof(str2)){
-      fprintf(stderr, "ERROR Server.c: Buffer is too small. Increase Buffer size\n");
+      fprintf(stderr, "ERROR server.c: Buffer is too small. Increase Buffer size\n");
       exit(1);
    }
 
@@ -146,6 +160,23 @@ struct InInput fillIndeed(int start, char* jobtitle, char* city, char *state, st
 
    return temp;
 }
+
+struct AutInput fillAuthentic(char* jobtitle, struct AutInput temp){
+   char *str1;
+   char str2[1024];
+   temp.jobtitle = jobtitle;
+   str1 = "https://authenticjobs.com/api/?api_key=";
+   int num = snprintf(str2, 1024, "&format=json&method=aj.jobs.search&keywords=%s&perpage=100",jobtitle);
+   if (num >sizeof(str2)){
+      fprintf(stderr, "ERROR server.c: Buffer is too small. Increase Buffer size\n");
+      exit(1);
+   }
+   char *request = concatAPI(str1,AUTHENTIC_KEY,str2);
+   temp.response = request;
+
+   return temp;
+}
+
 
 char *replaceSpaces(char* string){
    size_t len = strlen(string);

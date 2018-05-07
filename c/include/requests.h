@@ -171,6 +171,38 @@ void returnAdzuna(cJSON *response){
 }
 
 
+void returnAuthentic(cJSON *response){
+   int i;
+   double latitude, longitude;
+   cJSON *jobtitle, *company, *city, *state, *snippet, *url, *array, *postDate;
+   response = cJSON_GetObjectItem(response,"listings");
+   response = cJSON_GetObjectItem(response,"listing");
+   for (i =0; i < cJSON_GetArraySize(response); i++){
+      array = cJSON_GetArrayItem(response,i);
+      jobtitle = cJSON_GetObjectItem(array,"title");
+      company = cJSON_GetObjectItem(array,"company");
+      company = cJSON_GetObjectItem(company,"name");
+      snippet = cJSON_GetObjectItem(array,"keywords");
+      latitude = 0.0;
+      longitude = 0.0;
+      url = cJSON_GetObjectItem(array,"apply_url");
+      postDate = cJSON_GetObjectItem(array,"post_date");
+      city = cJSON_GetObjectItem(array,"company");
+      if (cJSON_GetObjectItem(city,"location") == NULL){
+         city = company;
+         state = company;
+      }
+      else{
+         city = cJSON_GetObjectItem(city,"location");
+         city = cJSON_GetObjectItem(city,"city");
+         state = cJSON_GetObjectItem(array,"company");
+         state = cJSON_GetObjectItem(state,"location");
+         state = cJSON_GetObjectItem(state,"state");
+      }
+      insertAuthenticDB(jobtitle->valuestring, company->valuestring, city->valuestring, state->valuestring, snippet->valuestring, url->valuestring, longitude, latitude, postDate->valuestring);
+   }
+}
+
 int returnIndeedSize(cJSON *response){
    cJSON *size = cJSON_GetObjectItem(response,"totalResults");
    return size->valueint;
