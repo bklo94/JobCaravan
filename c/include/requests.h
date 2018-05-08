@@ -47,6 +47,13 @@ char* concatAPI(char *a, const char *b, char *c){
     return str;
 }
 
+char* concatEndAPI(char *a, const char *b){
+    size_t len = strlen(a) + strlen(b);
+    char *str = malloc(len + 1);
+    strcpy(str,a);
+    strcat(str,b);
+    return str;
+}
 
 char* concatThree(char *a, char *b, char *c){
     size_t len = strlen(a) + strlen(b) + strlen(c);
@@ -169,7 +176,6 @@ void returnAdzuna(cJSON *response){
       insertAdzunaDB(jobtitle->valuestring, company->valuestring, city->valuestring, state->valuestring, snippet->valuestring, url->valuestring, longitude->valuedouble, latitude->valuedouble, postDate->valuestring);
    }
 }
-
 
 void returnAuthentic(cJSON *response){
    int i;

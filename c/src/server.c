@@ -13,30 +13,17 @@
 #include <curl/curl.h>
 #include <ctype.h>
 
-struct InInput{
+struct input{
    char *jobtitle;
    char *city;
    char *state;
    char *response;
 };
 
-struct AdzInput{
-   char *jobtitle;
-   char *city;
-   char *state;
-   char *response;
-};
-
-struct AutInput{
-   char *jobtitle;
-   char *city;
-   char *state;
-   char *response;
-};
-
-struct AutInput fillAuthentic(char*, struct AutInput);
-struct AdzInput fillAdzuna(int, char*, char*, char *, struct AdzInput);
-struct InInput fillIndeed(int, char*, char*, char *,struct InInput);
+struct input fillGithub(char*, struct input);
+struct input fillAuthentic(char*, struct input);
+struct input fillAdzuna(int, char*, char*, char *, struct input);
+struct input fillIndeed(int, char*, char*, char *,struct input);
 char *replaceSpaces(char*);
 void replaceNull(char*);
 
@@ -47,9 +34,7 @@ int main(int argc, char *argv[]){
    char *request;
    int start = 1, end = 25, size;
    cJSON *response;
-   struct InInput Indeed;
-   struct AdzInput Adzuna;
-   struct AutInput AuthenticJobs;
+   struct input Indeed, Adzuna, AuthenticJobs, ZipRecruiter;
    char *jobtitle = malloc(256);
    char *city = malloc(256);
    char *state = malloc(256);
@@ -60,22 +45,20 @@ int main(int argc, char *argv[]){
          fprintf(stderr, "ERROR server.c: Buffer is too small. Increase Buffer size\n");
          exit(1);
       }
-      if (start == 1){
-         printf("Enter the jobtitle: ");
-         fgets(jobtitle, 256, stdin);
-         replaceNull(jobtitle);
-         jobtitle = replaceSpaces(jobtitle);
+      printf("Enter the jobtitle: ");
+      fgets(jobtitle, 256, stdin);
+      replaceNull(jobtitle);
+      jobtitle = replaceSpaces(jobtitle);
 
-         printf("Enter the city: ");
-         fgets(city, 256, stdin);
-         replaceNull(city);
-         city = replaceSpaces(city);
+      printf("Enter the city: ");
+      fgets(city, 256, stdin);
+      replaceNull(city);
+      city = replaceSpaces(city);
 
-         printf("Enter the State: ");
-         fgets(state, 256, stdin);
-         replaceNull(state);
-         state = replaceSpaces(state);
-      }
+      printf("Enter the State: ");
+      fgets(state, 256, stdin);
+      replaceNull(state);
+      state = replaceSpaces(state);
    }
 
    else{
@@ -113,8 +96,7 @@ int main(int argc, char *argv[]){
    return 0;
 }
 
-
-struct AdzInput fillAdzuna(int start, char* jobtitle, char* city, char *state,struct AdzInput temp){
+struct input fillAdzuna(int start, char* jobtitle, char* city, char *state,struct input temp){
    char str1[1024];
    char str3[1024];
    temp.jobtitle = jobtitle;
@@ -138,8 +120,7 @@ struct AdzInput fillAdzuna(int start, char* jobtitle, char* city, char *state,st
    return temp;
 }
 
-
-struct InInput fillIndeed(int start, char* jobtitle, char* city, char *state, struct InInput temp){
+struct input fillIndeed(int start, char* jobtitle, char* city, char *state, struct input temp){
    int radius = 90;
    char str2[1024];
    temp.jobtitle = jobtitle;
@@ -161,7 +142,7 @@ struct InInput fillIndeed(int start, char* jobtitle, char* city, char *state, st
    return temp;
 }
 
-struct AutInput fillAuthentic(char* jobtitle, struct AutInput temp){
+struct input fillAuthentic(char* jobtitle, struct input temp){
    char *str1;
    char str2[1024];
    temp.jobtitle = jobtitle;
@@ -177,6 +158,24 @@ struct AutInput fillAuthentic(char* jobtitle, struct AutInput temp){
    return temp;
 }
 
+struct input fillZipRecruiter(int start, char* jobtitle, char* city, char *state, struct input temp){
+   //larger than length of continential United States
+   int radius = 3000;
+   char str1[1024];
+   temp.jobtitle = jobtitle;
+   temp.city = city;
+   temp.state = state;
+   int num = snprintf(str1, 1024, "api.ziprecruiter.com/jobs/v1?search=%s&location=%s+%s&radius_miles=%s&days_ago=&jobs_per_page=500&page=%s&api_key=",jobtitle, city, state, radius, start);
+   if (num >sizeof(str1)){
+      fprintf(stderr, "ERROR server.c: Buffer is too small. Increase Buffer size\n");
+      exit(1);
+   }
+
+   char *request = concatEndAPI(str1,ZIP_KEY);
+   temp.response = request;
+
+   return temp;
+}
 
 char *replaceSpaces(char* string){
    size_t len = strlen(string);
