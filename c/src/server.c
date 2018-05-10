@@ -21,28 +21,33 @@ struct input{
    char *response;
 };
 
-struct input fillZipRecruiter(int, char*, char*, char *, struct input);
+struct input fillZipRecruiter(int, char*, char*, char*, struct input);
 struct input fillAuthentic(char*, struct input);
-struct input fillAdzuna(int, char*, char*, char *, struct input);
-struct input fillIndeed(int, char*, char*, char *,struct input);
+struct input fillAdzuna(int, char*, char*, char*, struct input);
+struct input fillIndeed(int, char*, char*, char*,struct input);
 char *replaceSpaces(char*);
 void replaceNull(char*);
+void *connection_handler(void*);
 
 //devug with valgrind --leak-check=full -v /bin/server
 //https://www.binarytides.com/receive-full-data-with-recv-socket-function-in-c/
 //https://stackoverflow.com/questions/22077802/simple-c-example-of-doing-an-http-post-and-consuming-the-response
+//https://www.geeksforgeeks.org/socket-programming-cc/
+
 int main(int argc, char *argv[]){
    char *request;
-   int start = 1, end = 25, testKey = 1, size, server_fd, new_socket, valread;
+   int start = 1, end = 25, testKey = 1, runAPI = 0, size, server_fd, new_socket, valread, opt = 1;
    cJSON *response;
    struct input Indeed, Adzuna, AuthenticJobs, ZipRecruiter;
    struct sockaddr_in address;
+   int addrlen = sizeof(address);
    char *jobtitle = malloc(256);
    char *city = malloc(256);
    char *state = malloc(256);
+   char buffer[1024] = {0};
+   char *hello = "Server: Hello! Thissi from the server";
 
-   /*
-   if ((server_fd = socket(AF_INET, SOCK_STRAM, 0)) == 0){
+   if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0){
       perror("Socket Failed");
       exit(EXIT_FAILURE);
    }
@@ -73,18 +78,10 @@ int main(int argc, char *argv[]){
 
    valread = read(new_socket, buffer, 1024);
    printf("%s\n", buffer);
-   send(new_so
-      if (jobtitle == NULL || state == NULL || city == NULL){
-         fprintf(stderr, "ERROR server.c: Buffer is too small. Increase Buffer size\n");
-         exit(1);
-      }
-      printf("Enter the jobtitle: ");
-      fgets(jobtitle, 256, stdin);
-      replaceNull(jobtitle);
-      jobtitle = replaceSpaces(jobcket, hello , strlen(hello), 0);
+   send(new_socket, hello , strlen(hello), 0);
    printf("Hello message sent\n");
-   */
 
+   /*
    if(testKey == 0){
       if (jobtitle == NULL || state == NULL || city == NULL){
          fprintf(stderr, "ERROR server.c: Buffer is too small. Increase Buffer size\n");
@@ -111,44 +108,46 @@ int main(int argc, char *argv[]){
       city = "San+Francisco";
       state = "CA";
    }
+   */
 
-   do {
-      ZipRecruiter = fillZipRecruiter(start,jobtitle,city,state,ZipRecruiter);
-      response = getRequest(ZipRecruiter.response);
-      size = returnRecruiterSize(response);
-      size /= 100;
-      returnZipRecruiter(response);
-      end = size;
-      start++;
-      printf("%i, %i\n", start, end);
-   } while(start <= end);
+   if (runAPI == 1){
+      //Authentic has almost no Software dev jobs... So no need to loop
+      AuthenticJobs = fillAuthentic(jobtitle,AuthenticJobs);
+      response = getRequest(AuthenticJobs.response);
+      returnAuthentic(response);
 
+      do {
+         ZipRecruiter = fillZipRecruiter(start,jobtitle,city,state,ZipRecruiter);
+         response = getRequest(ZipRecruiter.response);
+         size = returnRecruiterSize(response);
+         size /= 100;
+         returnZipRecruiter(response);
+         end = size;
+         start++;
+         printf("%i, %i\n", start, end);
+      } while(start <= end);
 
-   //Authentic has almost no Software dev jobs... So no need to loop
-   AuthenticJobs = fillAuthentic(jobtitle,AuthenticJobs);
-   response = getRequest(AuthenticJobs.response);
-   returnAuthentic(response);
+      do {
+         Adzuna = fillAdzuna(start, jobtitle, city, state, Adzuna);
+         response = getRequest(Adzuna.response);
+         size = returnAdzunaSize(response);
+         size /= 50;
+         returnAdzuna(response);
+         end = size;
+         start++;
+         printf("%i, %i\n", start, end);
+      } while(start <= end);
 
-   do {
-      Adzuna = fillAdzuna(start, jobtitle, city, state, Adzuna);
-      response = getRequest(Adzuna.response);
-      size = returnAdzunaSize(response);
-      size /= 50;
-      returnAdzuna(response);
-      end = size;
-      start++;
-      printf("%i, %i\n", start, end);
-   } while(start <= end);
-
-   do {
-      Indeed = fillIndeed(start, jobtitle, city, state, Indeed);
-      response = getRequest(Indeed.response);
-      size = returnIndeedSize(response);
-      returnIndeed(response);
-      end = size;
-      start+= 25;
-      printf("%i, %i\n", start, end);
-   } while(start <= end);
+      do {
+         Indeed = fillIndeed(start, jobtitle, city, state, Indeed);
+         response = getRequest(Indeed.response);
+         size = returnIndeedSize(response);
+         returnIndeed(response);
+         end = size;
+         start+= 25;
+         printf("%i, %i\n", start, end);
+      } while(start <= end);
+   }
 
    return 0;
 }
@@ -217,7 +216,7 @@ struct input fillAuthentic(char* jobtitle, struct input temp){
 
 struct input fillZipRecruiter(int start, char* jobtitle, char* city, char *state, struct input temp){
    //larger than length of continential United States
-   int radius = 3000;
+   int radius = 200;
    char str1[1024];
    temp.jobtitle = jobtitle;
    temp.city = city;
