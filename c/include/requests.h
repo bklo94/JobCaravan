@@ -14,6 +14,8 @@
 #include <sys/types.h>
 #include <curl/curl.h>
 
+//basic way to print out results and check if they are pulling correctly.
+//printf("%s, %s, %s, %s, %s, %s, %s, %s\n", jobtitle->valuestring, company->valuestring, snippet->valuestring, url->valuestring, postDate->valuestring, relDate->valuestring, city->valuestring, state->valuestring);
 void error(const char *msg) { perror(msg); exit(0); }
 
 struct MemoryStruct {
@@ -209,6 +211,28 @@ void returnAuthentic(cJSON *response){
    }
 }
 
+void returnZipRecruiter(cJSON *response){
+   int i;
+   double latitude, longitude;
+   cJSON *jobtitle, *company, *city, *state, *snippet, *url, *array, *relDate, *postDate;
+   response = cJSON_GetObjectItem(response,"jobs");
+   for (i =0; i < cJSON_GetArraySize(response); i++){
+      array = cJSON_GetArrayItem(response,i);
+      jobtitle = cJSON_GetObjectItem(array,"name");
+      company = cJSON_GetObjectItem(array,"hiring_company");
+      company = cJSON_GetObjectItem(company,"name");
+      snippet = cJSON_GetObjectItem(array,"snippet");
+      latitude = 0.0;
+      longitude = 0.0;
+      url = cJSON_GetObjectItem(array,"url");
+      postDate = cJSON_GetObjectItem(array,"posted_time");
+      relDate = cJSON_GetObjectItem(array,"posted_time_friendly");
+      city = cJSON_GetObjectItem(array,"city");
+      state = cJSON_GetObjectItem(array,"state");
+      insertZipDB(jobtitle->valuestring, company->valuestring, city->valuestring, state->valuestring, snippet->valuestring, url->valuestring, longitude, latitude, relDate->valuestring, postDate->valuestring);
+   }
+}
+
 int returnIndeedSize(cJSON *response){
    cJSON *size = cJSON_GetObjectItem(response,"totalResults");
    return size->valueint;
@@ -216,6 +240,11 @@ int returnIndeedSize(cJSON *response){
 
 int returnAdzunaSize(cJSON *response){
    cJSON *size = cJSON_GetObjectItem(response,"count");
+   return size->valueint;
+}
+
+int returnRecruiterSize(cJSON *response){
+   cJSON *size = cJSON_GetObjectItem(response,"total_jobs");
    return size->valueint;
 }
 

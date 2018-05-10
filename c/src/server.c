@@ -12,6 +12,7 @@
 #include <sys/types.h>
 #include <curl/curl.h>
 #include <ctype.h>
+#define PORT 10800
 
 struct input{
    char *jobtitle;
@@ -20,7 +21,7 @@ struct input{
    char *response;
 };
 
-struct input fillGithub(char*, struct input);
+struct input fillZipRecruiter(int, char*, char*, char *, struct input);
 struct input fillAuthentic(char*, struct input);
 struct input fillAdzuna(int, char*, char*, char *, struct input);
 struct input fillIndeed(int, char*, char*, char *,struct input);
@@ -32,13 +33,57 @@ void replaceNull(char*);
 //https://stackoverflow.com/questions/22077802/simple-c-example-of-doing-an-http-post-and-consuming-the-response
 int main(int argc, char *argv[]){
    char *request;
-   int start = 1, end = 25, size;
+   int start = 1, end = 25, testKey = 1, size, server_fd, new_socket, valread;
    cJSON *response;
    struct input Indeed, Adzuna, AuthenticJobs, ZipRecruiter;
+   struct sockaddr_in address;
    char *jobtitle = malloc(256);
    char *city = malloc(256);
    char *state = malloc(256);
-   int testKey = 1;
+
+   /*
+   if ((server_fd = socket(AF_INET, SOCK_STRAM, 0)) == 0){
+      perror("Socket Failed");
+      exit(EXIT_FAILURE);
+   }
+
+   if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt))){
+      perror("Unable to set socket");
+      exit(EXIT_FAILURE);
+   }
+
+   address.sin_family = AF_INET;
+   address.sin_addr.s_addr = INADDR_ANY;
+   address.sin_port = htons(PORT);
+
+   if (bind(server_fd, (struct sockaddr *)&address, sizeof(address)) < 0){
+      perror("Unable to bind socket");
+      exit(EXIT_FAILURE);
+   }
+
+   if ((listen(server_fd, 3) < 0)){
+      perror("Unable to listen");
+      exit(EXIT_FAILURE);
+   }
+
+   if ((new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen)) < 0){
+      perror("Unable to accept");
+      exit(EXIT_FAILURE);
+   }
+
+   valread = read(new_socket, buffer, 1024);
+   printf("%s\n", buffer);
+   send(new_so
+      if (jobtitle == NULL || state == NULL || city == NULL){
+         fprintf(stderr, "ERROR server.c: Buffer is too small. Increase Buffer size\n");
+         exit(1);
+      }
+      printf("Enter the jobtitle: ");
+      fgets(jobtitle, 256, stdin);
+      replaceNull(jobtitle);
+      jobtitle = replaceSpaces(jobcket, hello , strlen(hello), 0);
+   printf("Hello message sent\n");
+   */
 
    if(testKey == 0){
       if (jobtitle == NULL || state == NULL || city == NULL){
@@ -66,6 +111,18 @@ int main(int argc, char *argv[]){
       city = "San+Francisco";
       state = "CA";
    }
+
+   do {
+      ZipRecruiter = fillZipRecruiter(start,jobtitle,city,state,ZipRecruiter);
+      response = getRequest(ZipRecruiter.response);
+      size = returnRecruiterSize(response);
+      size /= 100;
+      returnZipRecruiter(response);
+      end = size;
+      start++;
+      printf("%i, %i\n", start, end);
+   } while(start <= end);
+
 
    //Authentic has almost no Software dev jobs... So no need to loop
    AuthenticJobs = fillAuthentic(jobtitle,AuthenticJobs);
@@ -165,7 +222,7 @@ struct input fillZipRecruiter(int start, char* jobtitle, char* city, char *state
    temp.jobtitle = jobtitle;
    temp.city = city;
    temp.state = state;
-   int num = snprintf(str1, 1024, "api.ziprecruiter.com/jobs/v1?search=%s&location=%s+%s&radius_miles=%s&days_ago=&jobs_per_page=500&page=%s&api_key=",jobtitle, city, state, radius, start);
+   int num = snprintf(str1, 1024, "https://api.ziprecruiter.com/jobs/v1?search=%s&location=%s+%s&radius_miles=%i&days_ago=&jobs_per_page=500&page=%i&api_key=",jobtitle, city, state, radius, start);
    if (num >sizeof(str1)){
       fprintf(stderr, "ERROR server.c: Buffer is too small. Increase Buffer size\n");
       exit(1);

@@ -1,3 +1,6 @@
+#ifndef DATABASE_H
+#define DATABASE_H
+
 #include "DB.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -150,3 +153,46 @@ void insertAuthenticDB(char *jobtitle, char *company, char *city, char *state, c
    PQclear(response);
    PQfinish(conn);
 }
+
+void insertZipDB(char *jobtitle, char *company, char *city, char *state, char *snippet, char *url, double longitude, double latitude, char *relDate, char *postDate){
+   PGconn* conn = connectDB();
+
+   char buffer[2048];
+   int num = snprintf(buffer, sizeof(buffer), "INSERT INTO ZipRecruiter( jobtitle, company, city, state, snippet, url, longitude, latitude, relDate, postDate) VALUES(%s, %s, %s, %s, %s, %s, %lf, %lf, %s, %s);",  PQescapeLiteral(conn,jobtitle,(size_t) strlen(jobtitle)), PQescapeLiteral(conn,company,(size_t) strlen(company)), PQescapeLiteral(conn,city,(size_t) strlen(city)), PQescapeLiteral(conn,state,(size_t) strlen(state)), PQescapeLiteral(conn,snippet,(size_t) strlen(snippet)), PQescapeLiteral(conn,url,(size_t) strlen(url)), longitude, latitude, PQescapeLiteral(conn,relDate,(size_t) strlen(relDate)), PQescapeLiteral(conn,postDate,(size_t) strlen(postDate)));
+   if (num >sizeof(buffer)){
+      fprintf(stderr, "ERROR database.h: Buffer is too small. Increase Buffer size\n");
+      exit(1);
+   }
+   //supresses a notice of the table already existing
+   PGresult *response = PQexec(conn, "SET client_min_messages = error;");
+
+   response = PQexec(conn, "CREATE TABLE IF NOT EXISTS ZipRecruiter(ID SERIAL PRIMARY KEY, jobtitle VARCHAR(255), company VARCHAR(255), city VARCHAR(50), state VARCHAR(25), snippet VARCHAR(2000), url VARCHAR(2000), longitude DOUBLE PRECISION, latitude DOUBLE PRECISION, relDate VARCHAR(255), postDate VARCHAR(255));");
+
+   if (PQresultStatus(response) != PGRES_COMMAND_OK){
+      printf("ERROR: CREATE TABLE Command failed.\n");
+      PQclear(response);
+      do_exit(conn);
+   }
+
+   response = PQexec(conn, buffer);
+
+   if (PQresultStatus(response) != PGRES_COMMAND_OK){
+      printf("ERROR: INSERT Command failed.\n");
+      PQclear(response);
+      do_exit(conn);
+   }
+
+   response = PQexec(conn, "DELETE FROM ZipRecruiter a USING (SELECT MIN(ctid) as ctid, snippet, company, jobtitle FROM ZipRecruiter GROUP BY snippet, company, jobtitle HAVING COUNT(*) > 1) b WHERE a.jobtitle = b.jobtitle AND a.snippet = b.snippet AND a.company = b.company AND a.ctid <> b.ctid;");
+
+   if (PQresultStatus(response) != PGRES_COMMAND_OK){
+      printf("ERROR: DELETE Command failed.\n");
+      PQclear(response);
+      do_exit(conn);
+   }
+
+   PQclear(response);
+   PQfinish(conn);
+}
+
+
+#endif
