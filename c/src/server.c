@@ -33,6 +33,8 @@ void *connection_handler(void*);
 //https://www.binarytides.com/receive-full-data-with-recv-socket-function-in-c/
 //https://stackoverflow.com/questions/22077802/simple-c-example-of-doing-an-http-post-and-consuming-the-response
 //https://www.geeksforgeeks.org/socket-programming-cc/
+//https://nominatim.openstreetmap.org/search?q=san%20francisco&format=json&polygon=1&addressdetails=1
+//https://www.geeksforgeeks.org/socket-programming-python/
 
 int main(int argc, char *argv[]){
    char *request;

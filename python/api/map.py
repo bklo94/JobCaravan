@@ -63,7 +63,7 @@ def getMap(coordArr,popDict):
         job = "<b>Job:</b>{}</br>".format(popDict[i]['jobtitle'])
         company = "<b>Company:</b>{}</br>".format(popDict[i]['company'])
         #snippet = "<b>Snippet:</b>{}</br>".format(popDict[i]['snippet'])
-        url = "<a href=\"{}\">Job Link</a></br>".format(popDict[i]['url'])
+        url = "<a href=\"{}\" target=\"_blank\">Job Link</a></br>".format(popDict[i]['url'])
         date = "<b>Posted Date:</b>{}</br>".format(popDict[i]['postdate'])
         html = job + company + url + date
         folium.Marker(
