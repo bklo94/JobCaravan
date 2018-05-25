@@ -21,6 +21,11 @@ struct input{
    char *response;
 };
 
+struct state{
+   char *name;
+   char *cities[12];
+};
+
 struct input fillZipRecruiter(int, char*, char*, char*, struct input);
 struct input fillAuthentic(char*, struct input);
 struct input fillAdzuna(int, char*, char*, char*, struct input);
@@ -38,52 +43,18 @@ void *connection_handler(void*);
 
 int main(int argc, char *argv[]){
    char *request;
-   int start = 1, end = 25, testKey = 1, runAPI = 0, size, server_fd, new_socket, valread, opt = 1;
+   int start = 1, end = 25, testKey = 2, runAPI = 1, size, server_fd, new_socket, valread, opt = 1;
    cJSON *response;
    struct input Indeed, Adzuna, AuthenticJobs, ZipRecruiter;
+   struct state CA, WA, NY, MA, IL, QC, CO, UT, GA, NC ,TX ,PA ,ON ,DC ,MI ,WI ,OR ,BC ,OH ,AB ,FL ,MN ,MO ,NV ,AZ ,NS ,AL, OK;
    struct sockaddr_in address;
    int addrlen = sizeof(address);
    char *jobtitle = malloc(256);
    char *city = malloc(256);
    char *state = malloc(256);
    char buffer[1024] = {0};
-   char *hello = "Server: Hello! Thissi from the server";
+   char *hello = "Server: Hello! This is from the server";
 
-   if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0){
-      perror("Socket Failed");
-      exit(EXIT_FAILURE);
-   }
-
-   if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt))){
-      perror("Unable to set socket");
-      exit(EXIT_FAILURE);
-   }
-
-   address.sin_family = AF_INET;
-   address.sin_addr.s_addr = INADDR_ANY;
-   address.sin_port = htons(PORT);
-
-   if (bind(server_fd, (struct sockaddr *)&address, sizeof(address)) < 0){
-      perror("Unable to bind socket");
-      exit(EXIT_FAILURE);
-   }
-
-   if ((listen(server_fd, 3) < 0)){
-      perror("Unable to listen");
-      exit(EXIT_FAILURE);
-   }
-
-   if ((new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen)) < 0){
-      perror("Unable to accept");
-      exit(EXIT_FAILURE);
-   }
-
-   valread = read(new_socket, buffer, 1024);
-   printf("%s\n", buffer);
-   send(new_socket, hello , strlen(hello), 0);
-   printf("Hello message sent\n");
-
-   /*
    if(testKey == 0){
       if (jobtitle == NULL || state == NULL || city == NULL){
          fprintf(stderr, "ERROR server.c: Buffer is too small. Increase Buffer size\n");
@@ -104,53 +75,117 @@ int main(int argc, char *argv[]){
       replaceNull(state);
       state = replaceSpaces(state);
    }
-
-   else{
+   else if (testKey == 1){
       jobtitle = "Software+Developer";
       city = "San+Francisco";
       state = "CA";
    }
-   */
-
+   char jobArr[26][256] = {"Software+Engineer","Software+Developer","SDET","Junior+Engineer","Junior+Software","New+Grad+Engineer","New+Grad+Software","Software+Engineer+Apprentice","Computer+Science","Python+Developer","C+Developer","Java+Developer","Android+Developer","iOS+Developer","Javascript+Developer","Full+Stack","Front+End","Back+End","QA+Engineer","Quality+Assurance+Engineer","Devops","Forward+Deployed+Engineer"};
+   CA.name = "CA";
+   WA.name = "WA";
+   NY.name = "NY";
+   MA.name = "MA";
+   IL.name = "IL";
+   QC.name = "QC";
+   CO.name = "CO";
+   UT.name = "UT";
+   GA.name = "GA";
+   NC.name = "NC";
+   TX.name = "TX";
+   PA.name = "PA";
+   ON.name = "ON";
+   DC.name = "DC";
+   MI.name = "MI";
+   WI.name = "WI";
+   OR.name = "OR";
+   BC.name = "BC";
+   OH.name = "OH";
+   AB.name = "AB";
+   FL.name = "FL";
+   MN.name = "MN";
+   MO.name = "MO";
+   NV.name = "NV";
+   AZ.name = "AZ";
+   NS.name = "NS";
+   AL.name = "AL";
+   OK.name = "OK";
+   memcpy(CA.cities,(char *[12]){"San+Francisco", "Berkeley", "Oakland", "Santa+Clara", "San+Jose","Venice+Beach", "Santa+Monica", "Downtown+L.A.","Los+Angeles","Irvine","Long+Beach","San+Diego"},12*sizeof(char*));
+   memcpy(WA.cities,(char *[1]){"Seattle"},1*sizeof(char*));
+   memcpy(NY.cities,(char *[1]){"New+York+City"},1*sizeof(char*));
+   memcpy(MA.cities,(char *[1]){"Boston"},1*sizeof(char*));
+   memcpy(IL.cities,(char *[1]){"Chicago"},1*sizeof(char*));
+   memcpy(QC.cities,(char *[1]){"Montreal"},1*sizeof(char*));
+   memcpy(CO.cities,(char *[2]){"Boulder", "Denver"},2*sizeof(char*));
+   memcpy(UT.cities,(char *[2]){"Salt+Lake+City","Provo"},2*sizeof(char*));
+   memcpy(GA.cities,(char *[1]){"Atlanta"},1*sizeof(char*));
+   memcpy(NC.cities,(char *[3]){"Charlotte", "Raleigh", "RTP"},3*sizeof(char*));
+   memcpy(TX.cities,(char *[5]){"Austin", "Dallas","Fort+Worth","Houston","San Antonio"},5*sizeof(char*));
+   memcpy(PA.cities,(char *[2]){"Pittsburgh","Philadelphia"},2*sizeof(char*));
+   memcpy(ON.cities,(char *[4]){"Kitchener","Waterloo","Toronto","Ottawa"},4*sizeof(char*));
+   memcpy(DC.cities,(char *[1]){"Washington"},1*sizeof(char*));
+   memcpy(MI.cities,(char *[3]){"Ann+Arbor","Ypsilanti","Detroit"},3*sizeof(char*));
+   memcpy(WI.cities,(char *[1]){"Madison"},1*sizeof(char*));
+   memcpy(OR.cities,(char *[1]){"Portland"},1*sizeof(char*));
+   memcpy(BC.cities,(char *[1]){"Vancouver"},1*sizeof(char*));
+   memcpy(OH.cities,(char *[2]){"Columbus","Cleveland"},2*sizeof(char*));
+   memcpy(AB.cities,(char *[3]){"Edmonton","Calgary","Miami"},3*sizeof(char*));
+   memcpy(FL.cities,(char *[2]){"Tampa", "St.+Petersburg"},2*sizeof(char*));
+   memcpy(MN.cities,(char *[2]){"Minneapolis-Saint Paul", "Twin+Cities"},2*sizeof(char*));
+   memcpy(MO.cities,(char *[2]){"Kansas+City-Overland+Park", "Kansas+City"},2*sizeof(char*));
+   memcpy(NV.cities,(char *[1]){"Las+Vegas"},1*sizeof(char*));
+   memcpy(AZ.cities,(char *[1]){"Phoenix"},1*sizeof(char*));
+   memcpy(NS.cities,(char *[1]){"Halifax"},1*sizeof(char*));
+   memcpy(AL.cities,(char *[1]){"Huntsville"},1*sizeof(char*));
+   memcpy(OK.cities,(char *[1]){"Oklahoma+City"},1*sizeof(char*));
+   struct state arr[] = {CA, WA, NY, MA, IL, QC, CO, UT, GA, NC ,TX ,PA ,ON ,DC ,MI ,WI ,OR ,BC ,OH ,AB ,FL ,MN ,MO ,NV ,AZ ,NS ,AL, OK};
    if (runAPI == 1){
-      //Authentic has almost no Software dev jobs... So no need to loop
-      AuthenticJobs = fillAuthentic(jobtitle,AuthenticJobs);
-      response = getRequest(AuthenticJobs.response);
-      returnAuthentic(response);
-
-      do {
-         ZipRecruiter = fillZipRecruiter(start,jobtitle,city,state,ZipRecruiter);
-         response = getRequest(ZipRecruiter.response);
-         size = returnRecruiterSize(response);
-         size /= 100;
-         returnZipRecruiter(response);
-         end = size;
-         start++;
-         printf("%i, %i\n", start, end);
-      } while(start <= end);
-
-      do {
-         Adzuna = fillAdzuna(start, jobtitle, city, state, Adzuna);
-         response = getRequest(Adzuna.response);
-         size = returnAdzunaSize(response);
-         size /= 50;
-         returnAdzuna(response);
-         end = size;
-         start++;
-         printf("%i, %i\n", start, end);
-      } while(start <= end);
-
-      do {
-         Indeed = fillIndeed(start, jobtitle, city, state, Indeed);
-         response = getRequest(Indeed.response);
-         size = returnIndeedSize(response);
-         returnIndeed(response);
-         end = size;
-         start+= 25;
-         printf("%i, %i\n", start, end);
-      } while(start <= end);
+      //TODO Optimize for loop with parallel threads
+      for (int a = 0; a < sizeof(arr)/sizeof(arr[0]); a++){
+         for (int b = 0; b < sizeof(arr[a].cities[b])/sizeof(arr[a].cities[0]);b++){
+            for (int c = 0; c < sizeof(jobArr)/sizeof(jobArr[0]);c++){
+               /*
+               //Low rate limit, may delete from application
+               //Authentic has almost no Software dev jobs... So no need to loop
+               AuthenticJobs = fillAuthentic(jobArr[c],AuthenticJobs);
+               response = getRequest(AuthenticJobs.response);
+               returnAuthentic(response);
+               start = 1;
+               do {
+                  Adzuna = fillAdzuna(start, jobArr[c], arr[a].cities[b], arr[a].name, Adzuna);
+                  response = getRequest(Adzuna.response);
+                  size = returnAdzunaSize(response);
+                  size /= 50;
+                  returnAdzuna(response);
+                  end = size;
+                  start++;
+                  printf("%i, %i\n", start, end);
+               } while(start <= end);
+               */
+               start = 0;
+               do {
+                  ZipRecruiter = fillZipRecruiter(start,jobArr[c],arr[a].cities[b],arr[a].name,ZipRecruiter);
+                  response = getRequest(ZipRecruiter.response);
+                  size = returnRecruiterSize(response);
+                  size /= 100;
+                  returnZipRecruiter(response);
+                  end = size;
+                  start++;
+                  printf("%i, %i\n", start, end);
+               } while(start <= end);
+               start = 0;
+               do {
+                  Indeed = fillIndeed(start, jobArr[c], arr[a].cities[b], arr[a].name, Indeed);
+                  response = getRequest(Indeed.response);
+                  size = returnIndeedSize(response);
+                  returnIndeed(response);
+                  end = size;
+                  start+= 25;
+                  printf("%i, %i\n", start, end);
+               } while(start <= end);
+            }
+         }
+      }
    }
-
    return 0;
 }
 

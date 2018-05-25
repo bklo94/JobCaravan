@@ -202,10 +202,16 @@ void returnAuthentic(cJSON *response){
       }
       else{
          city = cJSON_GetObjectItem(city,"location");
-         city = cJSON_GetObjectItem(city,"city");
-         state = cJSON_GetObjectItem(array,"company");
-         state = cJSON_GetObjectItem(state,"location");
-         state = cJSON_GetObjectItem(state,"state");
+         if (cJSON_GetObjectItem(city,"city") == NULL){
+            city = cJSON_GetObjectItem(city,"city");
+            state = cJSON_GetObjectItem(array,"company");
+            state = cJSON_GetObjectItem(state,"location");
+            state = cJSON_GetObjectItem(state,"state");
+         }
+         else{
+            city = company;
+            state = company;
+         }
       }
       insertAuthenticDB(jobtitle->valuestring, company->valuestring, city->valuestring, state->valuestring, snippet->valuestring, url->valuestring, longitude, latitude, postDate->valuestring);
    }
