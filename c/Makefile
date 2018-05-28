@@ -1,12 +1,12 @@
 #compiler and flags
 CC			= gcc
-CFLAGS	+= -Wall -O3 -Wno-unused-variable -std=c99
+CFLAGS	+= -Wall -O3 -Wno-unused-variable -std=c99 -fopenmp
 CPPFLAGS	+= -I lib -I include -lcjson -I. -ggdb3
 
 #linker and flags
 LINKER	= gcc
 LFLAGS	+= -I lib -I include
-LDLIBS 	+= -lm -I /usr/include/postgresql -lpq -lcurl
+LDLIBS 	+= -lm -I /usr/include/postgresql -lpq -lcurl -fopenmp
 
 #target directory and name of executable
 EXE		= bin/server
