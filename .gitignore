@@ -18,3 +18,7 @@ python/JobCaravan/
 python/api/db\.py
 
 python/api/dbkeys\.py
+
+c/build\.log
+
+c/output\.log

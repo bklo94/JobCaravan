@@ -15,7 +15,7 @@
 #include <omp.h>
 
 #define PORT 10800
-#define NUMT 4
+#define NUMT 9
 
 struct input{
    char *jobtitle;
@@ -185,7 +185,24 @@ int main(int argc, char *argv[]){
    if (runAPI == 1){
       for (int a = 0; a < sizeof(arr)/sizeof(arr[0]); a++){
          for (int b = 0; b < arr[a].size;b++){
-            #pragma omp parallel for schedule(dynamic)
+            #pragma omp parallel for schedule(static) private(start, Indeed, response, size, end)
+            for (int c = 0; c < sizeof(jobArr)/sizeof(jobArr[0]);c++){
+               start = 0;
+               do {
+                  Indeed = fillIndeed(start, jobArr[c], arr[a].cities[b], arr[a].name, Indeed);
+                  response = getRequest(Indeed.response);
+                  size = returnIndeedSize(response);
+                  returnIndeed(response);
+                  end = size;
+                  start+= 25;
+                  printf("%i, %i\n", start, end);
+               } while(start <= end);
+            }
+         }
+      }
+      for (int a = 0; a < sizeof(arr)/sizeof(arr[0]); a++){
+         for (int b = 0; b < arr[a].size;b++){
+            #pragma omp parallel for schedule(static) private(start, ZipRecruiter, response, size, end)
             for (int c = 0; c < sizeof(jobArr)/sizeof(jobArr[0]);c++){
                start = 0;
                do {
@@ -203,24 +220,7 @@ int main(int argc, char *argv[]){
       }
       for (int a = 0; a < sizeof(arr)/sizeof(arr[0]); a++){
          for (int b = 0; b < arr[a].size;b++){
-            #pragma omp parallel for schedule(dynamic)
-            for (int c = 0; c < sizeof(jobArr)/sizeof(jobArr[0]);c++){
-               start = 0;
-               do {
-                  Indeed = fillIndeed(start, jobArr[c], arr[a].cities[b], arr[a].name, Indeed);
-                  response = getRequest(Indeed.response);
-                  size = returnIndeedSize(response);
-                  returnIndeed(response);
-                  end = size;
-                  start+= 25;
-                  printf("%i, %i\n", start, end);
-               } while(start <= end);
-            }
-         }
-      }
-      for (int a = 0; a < sizeof(arr)/sizeof(arr[0]); a++){
-         for (int b = 0; b < arr[a].size;b++){
-            #pragma omp parallel for schedule(dynamic)
+            #pragma omp parallel for schedule(static) private(AuthenticJobs, response)
             for (int c = 0; c < sizeof(jobArr)/sizeof(jobArr[0]);c++){
                //Low rate limit, may delete from application
                //Authentic has almost no Software dev jobs... So no need to loop
@@ -232,7 +232,7 @@ int main(int argc, char *argv[]){
       }
       for (int a = 0; a < sizeof(arr)/sizeof(arr[0]); a++){
          for (int b = 0; b < arr[a].size;b++){
-            #pragma omp parallel for schedule(dynamic)
+            #pragma omp parallel for schedule(static) private(start, Adzuna, response, size, end)
             for (int c = 0; c < sizeof(jobArr)/sizeof(jobArr[0]);c++){
                start = 1;
                do {

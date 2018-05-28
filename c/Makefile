@@ -34,6 +34,7 @@ $(OBJ): $(OBJDIR)/%.o: $(SRCDIR)/%.c .FORCE
 
 clean: remove
 	$(rm) $(EXE)
+	$(rm) *.log
 	@echo "Cleanup complete!"
 
 remove:
