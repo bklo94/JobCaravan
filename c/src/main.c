@@ -1,3 +1,9 @@
+/**
+* \author Brandon Lo
+* \date 2018
+* \copyright GNU GPL v3.0
+*/
+
 #include "API.h"
 #include "requests.h"
 #include "cJSON.h"
@@ -52,9 +58,6 @@ int main(int argc, char *argv[]){
         return 1;
    #endif
 
-   omp_set_num_threads( NUMT );
-   fprintf( stderr, "Using %d threads\n", NUMT );
-
    char *request;
    int start = 1, end = 25, testKey = 2, runAPI = 1, size, server_fd, new_socket, valread, opt = 1;
    cJSON *response;
@@ -67,6 +70,7 @@ int main(int argc, char *argv[]){
    char *state = malloc(256);
    char buffer[1024] = {0};
    char *hello = "Server: Hello! This is from the server";
+   omp_set_num_threads( NUMT );
 
    if(testKey == 0){
       if (jobtitle == NULL || state == NULL || city == NULL){
@@ -180,7 +184,6 @@ int main(int argc, char *argv[]){
    OK.size = 1;
    memcpy(OK.cities,(char *[1]){"Oklahoma+City"},1*sizeof(char*));
    struct state arr[] = {CA, WA, NY, MA, IL, QC, CO, UT, GA, NC ,TX ,PA ,ON ,DC ,MI ,WI ,OR ,BC ,OH ,AB ,FL ,MN ,MO ,NV ,AZ ,NS ,AL, OK};
-
 
    if (runAPI == 1){
       for (int a = 0; a < sizeof(arr)/sizeof(arr[0]); a++){

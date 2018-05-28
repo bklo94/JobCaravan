@@ -9,7 +9,7 @@ LFLAGS	+= -I lib -I include
 LDLIBS 	+= -lm -I /usr/include/postgresql -lpq -lcurl -fopenmp
 
 #target directory and name of executable
-EXE		= bin/server
+EXE		= bin/main
 
 #directories
 SRCDIR	= src
