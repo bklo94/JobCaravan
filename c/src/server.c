@@ -23,7 +23,8 @@ struct input{
 
 struct state{
    char *name;
-   char *cities[12];
+   int size;
+   char *cities[10];
 };
 
 struct input fillZipRecruiter(int, char*, char*, char*, struct input);
@@ -80,7 +81,7 @@ int main(int argc, char *argv[]){
       city = "San+Francisco";
       state = "CA";
    }
-   char jobArr[26][256] = {"Software+Engineer","Software+Developer","SDET","Junior+Engineer","Junior+Software","New+Grad+Engineer","New+Grad+Software","Software+Engineer+Apprentice","Computer+Science","Python+Developer","C+Developer","Java+Developer","Android+Developer","iOS+Developer","Javascript+Developer","Full+Stack","Front+End","Back+End","QA+Engineer","Quality+Assurance+Engineer","Devops","Forward+Deployed+Engineer"};
+   char jobArr[22][256] = {"Software+Engineer","Software+Developer","SDET","Junior+Engineer","Junior+Software","New+Grad+Engineer","New+Grad+Software","Software+Engineer+Apprentice","Computer+Science","Python+Developer","C+Developer","Java+Developer","Android+Developer","iOS+Developer","Javascript+Developer","Full+Stack","Front+End+Engineer","Back+End+Engineer","QA+Engineer","Quality+Assurance+Engineer","Devops","Forward+Deployed+Engineer"};
    CA.name = "CA";
    WA.name = "WA";
    NY.name = "NY";
@@ -109,39 +110,67 @@ int main(int argc, char *argv[]){
    NS.name = "NS";
    AL.name = "AL";
    OK.name = "OK";
-   memcpy(CA.cities,(char *[12]){"San+Francisco", "Berkeley", "Oakland", "Santa+Clara", "San+Jose","Venice+Beach", "Santa+Monica", "Downtown+L.A.","Los+Angeles","Irvine","Long+Beach","San+Diego"},12*sizeof(char*));
+   CA.size = 7;
+   memcpy(CA.cities,(char *[7]){"San+Francisco","Oakland","San+Jose","Sacramento","Los+Angeles","Irvine","San+Diego"},7*sizeof(char*));
+   WA.size = 1;
    memcpy(WA.cities,(char *[1]){"Seattle"},1*sizeof(char*));
+   NY.size = 1;
    memcpy(NY.cities,(char *[1]){"New+York+City"},1*sizeof(char*));
+   MA.size = 1;
    memcpy(MA.cities,(char *[1]){"Boston"},1*sizeof(char*));
+   IL.size = 1;
    memcpy(IL.cities,(char *[1]){"Chicago"},1*sizeof(char*));
+   QC.size = 1;
    memcpy(QC.cities,(char *[1]){"Montreal"},1*sizeof(char*));
+   CO.size = 2;
    memcpy(CO.cities,(char *[2]){"Boulder", "Denver"},2*sizeof(char*));
+   UT.size = 2;
    memcpy(UT.cities,(char *[2]){"Salt+Lake+City","Provo"},2*sizeof(char*));
+   GA.size = 1;
    memcpy(GA.cities,(char *[1]){"Atlanta"},1*sizeof(char*));
+   NC.size = 3;
    memcpy(NC.cities,(char *[3]){"Charlotte", "Raleigh", "RTP"},3*sizeof(char*));
+   TX.size = 5;
    memcpy(TX.cities,(char *[5]){"Austin", "Dallas","Fort+Worth","Houston","San Antonio"},5*sizeof(char*));
+   PA.size = 2;
    memcpy(PA.cities,(char *[2]){"Pittsburgh","Philadelphia"},2*sizeof(char*));
+   ON.size = 4;
    memcpy(ON.cities,(char *[4]){"Kitchener","Waterloo","Toronto","Ottawa"},4*sizeof(char*));
+   DC.size = 1;
    memcpy(DC.cities,(char *[1]){"Washington"},1*sizeof(char*));
+   MI.size = 3;
    memcpy(MI.cities,(char *[3]){"Ann+Arbor","Ypsilanti","Detroit"},3*sizeof(char*));
+   WI.size = 1;
    memcpy(WI.cities,(char *[1]){"Madison"},1*sizeof(char*));
+   OR.size = 1;
    memcpy(OR.cities,(char *[1]){"Portland"},1*sizeof(char*));
+   BC.size = 1;
    memcpy(BC.cities,(char *[1]){"Vancouver"},1*sizeof(char*));
+   OH.size = 2;
    memcpy(OH.cities,(char *[2]){"Columbus","Cleveland"},2*sizeof(char*));
+   AB.size = 3;
    memcpy(AB.cities,(char *[3]){"Edmonton","Calgary","Miami"},3*sizeof(char*));
+   FL.size = 2;
    memcpy(FL.cities,(char *[2]){"Tampa", "St.+Petersburg"},2*sizeof(char*));
+   MN.size = 2;
    memcpy(MN.cities,(char *[2]){"Minneapolis-Saint Paul", "Twin+Cities"},2*sizeof(char*));
-   memcpy(MO.cities,(char *[2]){"Kansas+City-Overland+Park", "Kansas+City"},2*sizeof(char*));
+   MO.size = 3;
+   memcpy(MO.cities,(char *[3]){"Kansas+City-Overland+Park", "St.Louis","Kansas+City"},3*sizeof(char*));
+   NV.size = 1;
    memcpy(NV.cities,(char *[1]){"Las+Vegas"},1*sizeof(char*));
+   AZ.size = 1;
    memcpy(AZ.cities,(char *[1]){"Phoenix"},1*sizeof(char*));
+   NS.size = 1;
    memcpy(NS.cities,(char *[1]){"Halifax"},1*sizeof(char*));
+   AL.size = 1;
    memcpy(AL.cities,(char *[1]){"Huntsville"},1*sizeof(char*));
+   OK.size = 1;
    memcpy(OK.cities,(char *[1]){"Oklahoma+City"},1*sizeof(char*));
    struct state arr[] = {CA, WA, NY, MA, IL, QC, CO, UT, GA, NC ,TX ,PA ,ON ,DC ,MI ,WI ,OR ,BC ,OH ,AB ,FL ,MN ,MO ,NV ,AZ ,NS ,AL, OK};
    if (runAPI == 1){
       //TODO Optimize for loop with parallel threads
       for (int a = 0; a < sizeof(arr)/sizeof(arr[0]); a++){
-         for (int b = 0; b < sizeof(arr[a].cities[b])/sizeof(arr[a].cities[0]);b++){
+         for (int b = 0; b < arr[a].size;b++){
             for (int c = 0; c < sizeof(jobArr)/sizeof(jobArr[0]);c++){
                /*
                //Low rate limit, may delete from application
