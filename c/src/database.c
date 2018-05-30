@@ -1,5 +1,10 @@
 #ifndef DATABASE_H
 #define DATABASE_H
+/**
+* \author Brandon Lo
+* \date 2018
+* \copyright GNU GPL v3.0
+*/
 
 #include "DB.h"
 #include <stdio.h>

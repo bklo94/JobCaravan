@@ -1,0 +1,15 @@
+matrix:
+  include:
+  - language: c
+    compiler:
+    - gcc
+    before_script:
+    - cd c
+    script:
+    - "./make.sh"
+notifications:
+  email:
+  - brandonklo94@gmail.com
+before_install:
+- openssl aes-256-cbc -K $encrypted_46bf78b50c73_key -iv $encrypted_46bf78b50c73_iv
+  -in secret.tar.enc -out secret.tar -d

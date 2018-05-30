@@ -1,3 +1,9 @@
+/**
+* \author Brandon Lo
+* \date 2018
+* \copyright GNU GPL v3.0
+*/
+
 #include "database.h"
 #include "cJSON.h"
 #include <stdio.h>

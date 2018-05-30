@@ -22,3 +22,5 @@ python/api/dbkeys\.py
 c/build\.log
 
 c/output\.log
+
+c/include/secret\.tar
