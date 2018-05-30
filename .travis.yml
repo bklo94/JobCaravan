@@ -4,22 +4,26 @@ matrix:
     compiler:
     - gcc
     before_script:
-    - psql -c 'create database jobsdb;' -U bklo
     - cd c
     script:
     - make
   - language: python
+    services: postgresql
     python:
     - '3.3'
     - '3.5'
     - '3.6'
     before_script:
     - cd python
+    before_install:
+    - export PIP_USE_MIRRORS=true
     install:
+    - easy_install distribute
     - pip install -r requirements.txt
+    before_script:
+    - psql -c "CREATE DATABASE jobsdb;" -U bklo
     script:
     - python manage.py runserver"
-    - python api/map.py
 notifications:
    email:
    - brandonklo94@gmail.com
