@@ -26,3 +26,5 @@ c/output\.log
 c/include/secret\.tar
 
 python/pythonSecrets\.tar
+
+secret\.tar
