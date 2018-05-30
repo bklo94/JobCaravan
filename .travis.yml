@@ -1,10 +1,21 @@
+addons:
+  postgresql: "10"
+  apt:
+    packages:
+    - postgresql-10
+    - postgresql-client-10
+env:
+  global:
+  - PGPORT=5432
+
 matrix:
   include:
   - language: c
-    compiler:
-    - gcc
+    services: postgresql
+    compiler: gcc
     before_script:
     - cd c
+    - psql -c "CREATE DATABASE jobsdb;" -U bklo
     script:
     - make
   - language: python
