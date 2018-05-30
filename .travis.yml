@@ -1,31 +1,28 @@
 matrix:
   include:
-   - language: c
-     compiler:
-      - gcc
-     before_script:
-      - psql -c 'create database jobsdb;' -U bklo
-      - cd c
-     script:
-      - "make"
-   - language: python
-     python:
-      - "3.3"
-      - "3.5"
-      - "3.6"
-     before_script:
-      - cd python
-     install:
-      - pip install -r requirements.txt
-     script:
-      - python manage.py runserver"
-      - "python api/map.py"
-
+  - language: c
+    compiler:
+    - gcc
+    before_script:
+    - psql -c 'create database jobsdb;' -U bklo
+    - cd c
+    script:
+    - make
+  - language: python
+    python:
+    - '3.3'
+    - '3.5'
+    - '3.6'
+    before_script:
+    - cd python
+    install:
+    - pip install -r requirements.txt
+    script:
+    - python manage.py runserver"
+    - python api/map.py
 notifications:
    email:
       - brandonklo94@gmail.com
-
 before_install:
-   - openssl aes-256-cbc -K $encrypted_fcc4dca47958_key -iv $encrypted_fcc4dca47958_iv
-      - in secret.tar.enc -out secret.tar -d
-      - tar xvf secret.tar
+   - openssl aes-256-cbc -K $encrypted_fcc4dca47958_key -iv $encrypted_fcc4dca47958_iv in secret.tar.enc -out secret.tar -d
+   - tar xvzf secret.tar
