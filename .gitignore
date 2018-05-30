@@ -24,3 +24,5 @@ c/build\.log
 c/output\.log
 
 c/include/secret\.tar
+
+python/pythonSecrets\.tar
