@@ -13,8 +13,11 @@ addons:
     global:
     - PGPORT=5432
     - PGHOST=localhost
-
+    - PQ_INCDIR=/usr/include/postgresql
+    - PQ_LIBDIR=/usr/lib/x86_64-linux-gnu
+    
 before_install:
+- pg_config
 - openssl aes-256-cbc -K $encrypted_fcc4dca47958_key -iv $encrypted_fcc4dca47958_iv -in secret.tar.enc -out secret.tar -d
 - tar xvf secret.tar
 
