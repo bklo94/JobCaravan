@@ -12,12 +12,17 @@
 #include <sys/types.h>
 
 //check for the file for travis-ci
+#if defined(__has_include)
 #if __has_include(<postgresql/libpq-fe.h>)
 #include <postgresql/libpq-fe.h>
 #endif
 #if __has_include(<libpq-fe.h>)
 #include <libpq-fe.h>
 #endif
+#else
+#include <postgresql/libpq-fe.h>
+#endif
+
 
 //How to setup the database
 //http://zetcode.com/db/postgresqlc/
