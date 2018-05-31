@@ -1,12 +1,13 @@
+sudo: required
 addons:
-  postgresql: "10"
-  apt:
-    packages:
-    - postgresql-10
-    - postgresql-client-10
-env:
-  global:
-  - PGPORT=5432
+  postgresql: "9.6"
+
+before_install:
+- openssl aes-256-cbc -K $encrypted_fcc4dca47958_key -iv $encrypted_fcc4dca47958_iv -in secret.tar.enc -out secret.tar -d
+- tar xvf secret.tar
+- sudo apt-get update -qq
+- sudo apt-get install -qq postgresql-server-dev-9.6
+- sudo apt-get install -qq libpq-dev
 
 matrix:
   include:
@@ -14,8 +15,10 @@ matrix:
     services: postgresql
     compiler: gcc
     before_script:
+    - openssl aes-256-cbc -K $encrypted_fcc4dca47958_key -iv $encrypted_fcc4dca47958_iv -in secret.tar.enc -out secret.tar -d
+    - tar xvf secret.tar
     - cd c
-    - psql -c "CREATE DATABASE jobsdb;" -U bklo
+    - psql -c "CREATE DATABASE testdb;" -U postgres
     script:
     - make
   - language: python
@@ -24,20 +27,21 @@ matrix:
     - '3.3'
     - '3.5'
     - '3.6'
-    before_script:
-    - cd python
     before_install:
+    - export DJANGO_SETTINGS_MODULE="JobCaravan.settings"
+    - export PYTHONPATH=$HOME/builds/bklo94/JobCaravan
     - export PIP_USE_MIRRORS=true
     install:
     - easy_install distribute
-    - pip install -r requirements.txt
+    - pip install -r python/requirements.txt
+    - pip install django==$DJANGO --quiet
+    - pip install psycopg2 --quiet
     before_script:
-    - psql -c "CREATE DATABASE jobsdb;" -U bklo
+    - cd python
+    - psql -c "CREATE DATABASE testdb;" -U postgres
     script:
-    - python manage.py runserver"
+    - python manage.py syncdb --noinput
+
 notifications:
    email:
    - brandonklo94@gmail.com
-before_install:
-   - openssl aes-256-cbc -K $encrypted_fcc4dca47958_key -iv $encrypted_fcc4dca47958_iv -in secret.tar.enc -out secret.tar -d
-   - tar xvf secret.tar
