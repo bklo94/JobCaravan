@@ -2,30 +2,27 @@ sudo: required
 dist: trusty
 
 addons:
-  postgresql: "9.6"
+  postgresql: "9.4"
   apt:
     packages:
-    - postgresql-9.6
-    - postgresql-client-9.6
-    - postgresql-server-dev-9.6
+    - postgresql-9.4
+    - postgresql-client-9.4
+    - postgresql-server-dev-9.4
     - libpq-dev
     env:
     global:
     - PGPORT=5432
     - PGHOST=localhost
-    - PQ_INCDIR=/usr/include/postgresql
-    - PQ_LIBDIR=/usr/lib/x86_64-linux-gnu
-    
-before_install:
-- pg_config
-- openssl aes-256-cbc -K $encrypted_fcc4dca47958_key -iv $encrypted_fcc4dca47958_iv -in secret.tar.enc -out secret.tar -d
-- tar xvf secret.tar
 
 matrix:
   include:
   - language: c
     services: postgresql
     compiler: gcc
+    before_install:
+    - pg_config
+    - openssl aes-256-cbc -K $encrypted_fcc4dca47958_key -iv $encrypted_fcc4dca47958_iv -in secret.tar.enc -out secret.tar -d
+    - tar xvf secret.tar
     before_script:
     - cd c
     - psql -c "CREATE DATABASE testdb;" -U postgres
@@ -37,8 +34,11 @@ matrix:
     python:
     - '3.6'
     before_install:
+    - pg_config
+    - openssl aes-256-cbc -K $encrypted_fcc4dca47958_key -iv $encrypted_fcc4dca47958_iv -in secret.tar.enc -out secret.tar -d
+    - tar xvf secret.tar
     - export DJANGO_SETTINGS_MODULE="JobCaravan.settings"
-    - export PYTHONPATH=$HOME/builds/bklo94/JobCaravan
+    - export PYTHONPATH=$HOME/builds/bklo94/JobCaravan/python
     - export PIP_USE_MIRRORS=true
     install:
     - easy_install distribute
@@ -50,7 +50,7 @@ matrix:
     - cd python
     - psql -c "CREATE DATABASE testdb;" -U postgres
     script:
-    - python manage.py syncdb --noinput
+    - python manage.py migrate --noinput
 
 notifications:
    email:
