@@ -1,5 +1,6 @@
 docs/* linguist-vendored
-python/api/templates* linguist-vendored
+python/api/templates/* linguist-vendored
+python/api/static/* linguist-vendored
 *.log linguist-vendored
 *.md linguist-vendored
 *.sh linguist-vendored
