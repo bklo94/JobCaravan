@@ -4,3 +4,6 @@ python/api/static/* linguist-vendored
 *.log linguist-vendored
 *.md linguist-vendored
 *.sh linguist-vendored
+c/include/pg_config_ext.h linguist-generated=true
+c/lib/* linguist-generated=true
+c/src/cJSON.c linguist-generated=true
