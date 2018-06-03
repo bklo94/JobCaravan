@@ -1,8 +1,8 @@
-docs/* linguist-vendored
+docs/* linguist-documentation
 python/api/templates/* linguist-vendored
 python/api/static/* linguist-vendored
-*.log linguist-vendored
-*.md linguist-vendored
+*.log linguist-documentation
+*.md linguist-documentation
 *.sh linguist-vendored
 c/include/pg_config_ext.h linguist-generated=true
 c/lib/* linguist-generated=true

@@ -16,7 +16,7 @@
 
 #define PORT 10800
 
-void listenCommand(){
+int listenCommand(){
    int socket_desc;
    struct sockaddr_in server;
 
@@ -34,4 +34,5 @@ void listenCommand(){
    }
 
    printf("Connected\n");
+   return 1;
 }

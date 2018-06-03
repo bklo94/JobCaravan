@@ -3,6 +3,6 @@
 
 #include <string.h>
 
-void listenCommand();
+int listenCommand();
 
 #endif
