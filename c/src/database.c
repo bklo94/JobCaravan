@@ -1,5 +1,3 @@
-#ifndef DATABASE_H
-#define DATABASE_H
 /**
 * \author Brandon Lo
 * \date 2018
@@ -209,6 +207,3 @@ void insertZipDB(char *jobtitle, char *company, char *city, char *state, char *s
    PQclear(response);
    PQfinish(conn);
 }
-
-
-#endif

@@ -69,7 +69,6 @@ int main(int argc, char *argv[]){
          {
                omp_set_num_threads(1);
                runAPI = listenCommand();
-               printf("%i\n", runAPI);
          }
 
          if (runAPI == 1)
@@ -123,7 +122,7 @@ void callAPI(){
    memcpy(NC.cities,(char *[3]){"Charlotte", "Raleigh", "RTP"},3*sizeof(char*));
    TX.name = "TX";
    TX.size = 5;
-   memcpy(TX.cities,(char *[5]){"Austin", "Dallas","Fort+Worth","Houston","San Antonio"},5*sizeof(char*));
+   memcpy(TX.cities,(char *[5]){"Austin", "Dallas","Fort+Worth","Houston","San+Antonio"},5*sizeof(char*));
    PA.name = "PA";
    PA.size = 2;
    memcpy(PA.cities,(char *[2]){"Pittsburgh","Philadelphia"},2*sizeof(char*));
@@ -149,11 +148,11 @@ void callAPI(){
    OH.size = 2;
    memcpy(OH.cities,(char *[2]){"Columbus","Cleveland"},2*sizeof(char*));
    AB.name = "AB";
-   AB.size = 3;
-   memcpy(AB.cities,(char *[3]){"Edmonton","Calgary","Miami"},3*sizeof(char*));
+   AB.size = 2;
+   memcpy(AB.cities,(char *[2]){"Edmonton","Calgary"},2*sizeof(char*));
    FL.name = "FL";
-   FL.size = 2;
-   memcpy(FL.cities,(char *[2]){"Tampa", "St.+Petersburg"},2*sizeof(char*));
+   FL.size = 3;
+   memcpy(FL.cities,(char *[3]){"Tampa", "St.+Petersburg","Miami"},3*sizeof(char*));
    MN.name = "MN";
    MN.size = 2;
    memcpy(MN.cities,(char *[2]){"Minneapolis-Saint Paul", "Twin+Cities"},2*sizeof(char*));
