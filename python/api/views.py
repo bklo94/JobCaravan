@@ -69,3 +69,15 @@ def main(request):
 
 def index(request):
     return render(request,'indeed/index.html')
+
+def leaflet(request):
+    update = Indeed()
+    update.updateDB()
+    jobList = list(Indeed.objects.all())
+    template = loader.get_template('indeed/leaflet.html')
+    context = {
+        'jobList': jobList,
+    }
+    length = len(jobList)
+    print ("Number of Jobs -", length)
+    return HttpResponse(template.render(context, request))

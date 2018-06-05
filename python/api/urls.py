@@ -10,7 +10,8 @@ urlpatterns = {
     path('', views.index),
     path('main', views.main),
     path('map', views.map),
-    path('table',views.table)
+    path('table',views.table),
+    path('leaflet',views.leaflet)
 }
 
 urlpatterns = format_suffix_patterns(urlpatterns)

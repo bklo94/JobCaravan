@@ -17,7 +17,7 @@ class Indeed(models.Model):
         obj = Indeed.objects.first()
         obj.refresh_from_db()
     def __str__(self):
-        template = '{0.jobtitle} {0.company} {0.city} {0.state} {0.snippet} {0.url} {0.reldate} {0.postdate}'
+        template = '{0.jobtitle} {0.company} {0.city} {0.state} {0.snippet} {0.url} {0.reldate} {0.postdate} {0.longitude} {0.latitude}'
         return template.format(self)
     class Meta:
         managed = False
