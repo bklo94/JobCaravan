@@ -20,6 +20,7 @@
 #include <curl/curl.h>
 #include <ctype.h>
 #include <omp.h>
+#include <time.h>
 
 #define NUMT 9
 
@@ -44,6 +45,8 @@ char *replaceSpaces(char*);
 void replaceNull(char*);
 void *connection_handler(void*);
 void callAPI();
+void outputLog(char*);
+void appendBuidlTime();
 
 //devug with valgrind --leak-check=full -v /bin/server
 //https://www.binarytides.com/receive-full-data-with-recv-socket-function-in-c/
@@ -73,6 +76,7 @@ int main(int argc, char *argv[]){
 
          if (runAPI == 1)
          {
+            appendBuidlTime();
             omp_set_num_threads(8);
             callAPI();
             runAPI = 0;
@@ -266,6 +270,7 @@ struct input fillAdzuna(int start, char* jobtitle, char* city, char *state,struc
       exit(1);
    }
    char *request = concatAPI(str1,ADZUNA_APPID,str2);
+   outputLog(request);
    request = concatAPI(request,ADZUNA_KEY,str3);
    temp.response = request;
 
@@ -289,6 +294,7 @@ struct input fillIndeed(int start, char* jobtitle, char* city, char *state, stru
    }
 
    char *request = concatAPI(str1,INDEED_KEY,str2);
+   outputLog(request);
    temp.response = request;
 
    return temp;
@@ -305,6 +311,7 @@ struct input fillAuthentic(char* jobtitle, struct input temp){
       exit(1);
    }
    char *request = concatAPI(str1,AUTHENTIC_KEY,str2);
+   outputLog(request);
    temp.response = request;
 
    return temp;
@@ -324,6 +331,7 @@ struct input fillZipRecruiter(int start, char* jobtitle, char* city, char *state
    }
 
    char *request = concatEndAPI(str1,ZIP_KEY);
+   outputLog(request);
    temp.response = request;
 
    return temp;
@@ -344,4 +352,27 @@ char *replaceSpaces(char* string){
 void replaceNull(char *string){
    if ((strlen(string) > 0) && (string[strlen (string) - 1] == '\n'))
       string[strlen (string) - 1] = '\0';
+}
+
+void outputLog(char *buffer){
+   FILE *outputLog = fopen("output.log", "ab+");
+   if (outputLog == NULL){
+      printf("Error opening file!\n");
+      exit(1);
+   }
+   fprintf(outputLog,"%s\n\n",buffer);
+   fclose(outputLog);
+   return;
+}
+
+void appendBuidlTime(){
+   time_t t = time(NULL);
+   struct tm *tm = localtime(&t);
+   FILE *outputLog = fopen("output.log", "ab+");
+   if (outputLog == NULL){
+      printf("Error opening file!\n");
+      exit(1);
+   }
+   fprintf(outputLog,"%s\n\n",asctime(tm));
+   fclose(outputLog);
 }

@@ -27,7 +27,7 @@ matrix:
     - cd c
     - psql -c "CREATE DATABASE testdb;" -U postgres
     script:
-    - make
+    - ./make.sh
 
   - language: python
     services: postgresql

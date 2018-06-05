@@ -45,12 +45,16 @@ int listenCommand(){
       exit(EXIT_FAILURE);
    }
 
-   if ((new_socket = accept(server_fd, (struct sockaddr *)&adress, (socklen_t*)&addrlen)) < 0){
+   if ((new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen)) < 0){
       perror("Accepting Socket Failed");
       exit(EXIT_FAILURE);
    }
 
-   valread = read(new_socket, buffer, 1024);
+   if ((valread = read(new_socket, buffer, 1024)) < 0 ){
+      perror("Reading Message Failed.");
+      exit(EXIT_FAILURE);
+   }
+
    printf("%s\n", buffer);
    send(new_socket, response, strlen(response), 0);
    printf("Hello message sent!\n");
