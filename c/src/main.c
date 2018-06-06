@@ -373,6 +373,6 @@ void appendBuidlTime(){
       printf("Error opening file!\n");
       exit(1);
    }
-   fprintf(outputLog,"%s\n\n",asctime(tm));
+   fprintf(outputLog,"Build Time: %s\n\n",asctime(tm));
    fclose(outputLog);
 }

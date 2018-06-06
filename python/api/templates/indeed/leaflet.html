@@ -19,6 +19,13 @@
    integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw=="
    crossorigin=""></script>
 
+   <!-- Mapcluster -->
+   <script src='https://api.mapbox.com/mapbox.js/v3.0.1/mapbox.js'></script>
+   <link href='https://api.mapbox.com/mapbox.js/v3.0.1/mapbox.css' rel='stylesheet' />
+   <script src='https://unpkg.com/leaflet.markercluster@1.0.3/dist/leaflet.markercluster.js'></script>
+   <link href='https://unpkg.com/leaflet.markercluster@1.0.3/dist/MarkerCluster.css' rel='stylesheet' />
+   <link href='https://unpkg.com/leaflet.markercluster@1.0.3/dist/MarkerCluster.Default.css' rel='stylesheet' />
+
     <title>JobCaravan: Transporting you from unemployment to employment! </title>
 </head>
 <body>
@@ -33,21 +40,25 @@
 <script>
 // initialize the map
 var mymap = L.map('mapid', {
-    preferCanvas: true
+    center: [37.7749, -122.4194],
+    preferCanvas: true,
+    zoom: 8
 });
 
-mymap.setView([48.85, 2.35], 8);
-// load a tile layer
+
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
     maxZoom: 18,
     id: 'mapbox.dark',
     accessToken: mapboxAPI
 }).addTo(mymap);
+//
+var markerClusters = L.markerClusterGroup();
 {% for jobs in jobList %}
-   var marker = L.circleMarker([{{jobs.latitude}}, {{jobs.longitude}}], {
-      color: '#3388ff'
-   }).addTo(mymap);
+   var popup =  "<b>Job Title: </b>"+ "{{jobs.jobtitle}}" + "</br>" + "<b>Company: </b>"+ "{{jobs.company}}" + "<br/>" + "<b>City: </b>" + "{{jobs.city}}" + "<br/>" + "<b>State: </b>" + "{{jobs.state}}" + "<br/>" + "<b>Snippet: </b>" + "{{jobs.snippet}}" + "<br/>" + "<a href={{jobs.url}} target='_blank'>" + "Indeed Link" + "</a>" + "<br/>" + "<b>Posted Date: </b>" + "{{jobs.postdate}}";
+   var jobsite = L.marker([{{jobs.latitude}}, {{jobs.longitude}}], {color: '#3388ff'}).bindPopup(popup)
+   markerClusters.addLayer(jobsite);
 {% endfor %}
+mymap.addLayer( markerClusters );
 </script>
 
    <!-- Optional JavaScript -->

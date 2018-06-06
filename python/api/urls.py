@@ -9,7 +9,6 @@ from JobCaravan import settings
 urlpatterns = {
     path('', views.index),
     path('main', views.main),
-    path('map', views.map),
     path('table',views.table),
     path('leaflet',views.leaflet)
 }

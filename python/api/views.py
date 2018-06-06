@@ -61,9 +61,6 @@ def table(request):
     print ("Number of Jobs -", length)
     return HttpResponse(template.render(context, request))
 
-def map(request):
-    return render(request,'indeed/map.html')
-
 def main(request):
     return render(request,'indeed/main.html')
 
