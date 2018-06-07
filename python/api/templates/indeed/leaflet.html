@@ -30,37 +30,7 @@
 </head>
 <body>
    {% if jobList %}
-   <span id="mapid" class="views"></span>
-   <span class="tablediv">
-      <table class="table table-bordered table-striped table-dark table-hover dt-responsive nowrap container-fluid dt-bootstrap4">
-         <thead>
-            <tr>
-               <th scope="col" style="width:130px;" >Job Title</th>
-               <th scope="col" style="width:120px;" >Company</th>
-               <th scope="col" style="width:100px;" >City</th>
-               <th scope="col" style="width:65px;" >State</th>
-               <th scope="col">Snippet</th>
-               <th scope="col" style="width:75px;" >URL</th>
-               <th scope="col" style="width:110px;" >Posted Date</th>
-            </tr>
-         </thead>
-         <tbody id="myTable">
-            {% for jobs in jobList %}
-            <tr style="display:""">
-               <td scope="row">{{jobs.jobtitle}}</td>
-               <td>{{jobs.company}}</td>
-               <td>{{jobs.city}}</td>
-               <td>{{jobs.state}}</td>
-               <td>{{jobs.snippet}}</td>
-               <td> <a href={{jobs.url}} target="_blank"> Indeed Link </td>
-               <td>{{jobs.postdate}}</td>
-               <td style="display:none" class="longitude">{{jobs.longitude}}</td>
-               <td style="display:none" class="latitude">{{jobs.latitude}}</td>
-          </tr>
-          {% endfor %}
-          </tbody>
-      </table>
-   </span>
+   <div id="mapid2"></div>
    {% else %}
        <p>No jobs are available.</p>
    {% endif %}
@@ -70,7 +40,7 @@
 <script>
 // initialize the map
 
-var mymap = L.map('mapid', {
+var mymap = L.map('mapid2', {
     center: [37.7749, -122.4194],
     preferCanvas: true,
     zoom: 8
@@ -89,37 +59,6 @@ var markerClusters = L.markerClusterGroup();
    markerClusters.addLayer(jobsite);
 {% endfor %}
 mymap.addLayer( markerClusters );
-
-mymap.on('zoomend', function onZoomEnd(){
-   filterBounds(mymap.getBounds().getNorth(), mymap.getBounds().getSouth(), mymap.getBounds().getWest(), mymap.getBounds().getEast())
-});
-
-mymap.on('dragend ', function onDragEnd(){
-   filterBounds(mymap.getBounds().getNorth(), mymap.getBounds().getSouth(), mymap.getBounds().getWest(), mymap.getBounds().getEast())
-});
-
-function filterBounds(North, South, West, East){
-   // Declare variables
-   var input, filter, table, tr, td, i;
-   table = document.getElementById("myTable");
-   tr = table.getElementsByTagName("tr");
-   long = table.getElementsByClassName("longitude");
-   lat = table.getElementsByClassName("latitude");
-
-   // Loop through all table rows, and hide those who don't match the search query
-   for (i = 0; i < tr.length; i++) {
-      long = tr[i].getElementsByClassName("longitude")[0].innerHTML;
-      lat = tr[i].getElementsByClassName("latitude")[0].innerHTML;
-      console.log(long, lat, North, South, West, East);
-      if (lat < North && lat > South && long < East && long > West) {
-         tr[i].style.display = "";
-      }
-      else {
-         tr[i].style.display = "none";
-      }
-   }
-}
-window.onload = filterBounds(mymap.getBounds().getNorth(), mymap.getBounds().getSouth(), mymap.getBounds().getWest(), mymap.getBounds().getEast());
 </script>
 
    <!-- Optional JavaScript -->

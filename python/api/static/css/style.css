@@ -50,6 +50,10 @@ nav{
    width: 50%;
 }
 
+#mapid2 {
+   height: 100vh;
+}
+
 .views{
   display: inline-block;
 }
