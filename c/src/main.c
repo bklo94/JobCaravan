@@ -77,7 +77,7 @@ int main(int argc, char *argv[]){
          if (runAPI == 1)
          {
             appendBuidlTime();
-            omp_set_num_threads(8);
+            omp_set_num_threads(9);
             callAPI();
             runAPI = 0;
          }

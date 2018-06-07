@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.http import JsonResponse
 from django.template import loader
 import pprint
 import re
@@ -32,7 +33,6 @@ def convertMonth(text):
 def table(request):
     update = Indeed()
     update.updateDB()
-    #TODO Parallelize this for loop
     #filters the bolded snippets and formats dates
     for target in Indeed.objects.all():
         #Cleanse the snippet
@@ -66,15 +66,3 @@ def main(request):
 
 def index(request):
     return render(request,'indeed/index.html')
-
-def leaflet(request):
-    update = Indeed()
-    update.updateDB()
-    jobList = list(Indeed.objects.all())
-    template = loader.get_template('indeed/leaflet.html')
-    context = {
-        'jobList': jobList,
-    }
-    length = len(jobList)
-    print ("Number of Jobs -", length)
-    return HttpResponse(template.render(context, request))
