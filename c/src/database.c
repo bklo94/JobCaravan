@@ -50,7 +50,7 @@ void insertIndeedDB(char *jobtitle, char *company, char *city, char *state, char
    PGconn* conn = connectDB();
 
    char buffer[1024];
-   int num = snprintf(buffer, sizeof(buffer), "INSERT INTO Indeed( jobtitle, company, city, state, snippet, url, longitude, latitude, relDate, postDate) VALUES(%s, %s, %s, %s, %s, %s, %lf, %lf, %s, %s);",  PQescapeLiteral(conn,jobtitle,(size_t) strlen(jobtitle)), PQescapeLiteral(conn,company,(size_t) strlen(company)), PQescapeLiteral(conn,city,(size_t) strlen(city)), PQescapeLiteral(conn,state,(size_t) strlen(state)), PQescapeLiteral(conn,snippet,(size_t) strlen(snippet)), PQescapeLiteral(conn,url,(size_t) strlen(url)), longitude, latitude, PQescapeLiteral(conn,relDate,(size_t) strlen(relDate)), PQescapeLiteral(conn,postDate,(size_t) strlen(postDate)));
+   int num = snprintf(buffer, sizeof(buffer), "INSERT INTO Indeed( jobtitle, company, city, state, snippet, url, longitude, latitude, relDate, postDate, applied) VALUES(%s, %s, %s, %s, %s, %s, %lf, %lf, %s, %s, %i);",  PQescapeLiteral(conn,jobtitle,(size_t) strlen(jobtitle)), PQescapeLiteral(conn,company,(size_t) strlen(company)), PQescapeLiteral(conn,city,(size_t) strlen(city)), PQescapeLiteral(conn,state,(size_t) strlen(state)), PQescapeLiteral(conn,snippet,(size_t) strlen(snippet)), PQescapeLiteral(conn,url,(size_t) strlen(url)), longitude, latitude, PQescapeLiteral(conn,relDate,(size_t) strlen(relDate)), PQescapeLiteral(conn,postDate,(size_t) strlen(postDate)), 0);
    if (num >sizeof(buffer)){
       fprintf(stderr, "ERROR database.h: Buffer is too small. Increase Buffer size\n");
       exit(1);
@@ -58,10 +58,10 @@ void insertIndeedDB(char *jobtitle, char *company, char *city, char *state, char
    //supresses a notice of the table already existing
    PGresult *response = PQexec(conn, "SET client_min_messages = error;");
 
-   response = PQexec(conn, "CREATE TABLE IF NOT EXISTS Indeed(ID SERIAL PRIMARY KEY, jobtitle VARCHAR(255), company VARCHAR(255), city VARCHAR(50), state VARCHAR(25), snippet VARCHAR(500), url VARCHAR(500), longitude DOUBLE PRECISION, latitude DOUBLE PRECISION, relDate VARCHAR(255), postDate VARCHAR(255));");
+   response = PQexec(conn, "CREATE TABLE IF NOT EXISTS Indeed(ID SERIAL PRIMARY KEY, jobtitle VARCHAR(255), company VARCHAR(255), city VARCHAR(50), state VARCHAR(25), snippet VARCHAR(500), url VARCHAR(500), longitude DOUBLE PRECISION, latitude DOUBLE PRECISION, relDate VARCHAR(255), postDate VARCHAR(255), applied INTEGER);");
 
    if (PQresultStatus(response) != PGRES_COMMAND_OK){
-      printf("ERROR: CREATE TABLE Command failed.\n");
+      printf("ERROR: CREATE INDEED TABLE Command failed.\n");
       PQclear(response);
       do_exit(conn);
    }
@@ -74,6 +74,14 @@ void insertIndeedDB(char *jobtitle, char *company, char *city, char *state, char
       do_exit(conn);
    }
 
+
+   PQclear(response);
+   PQfinish(conn);
+}
+
+void checkDupIndeed(){
+   PGconn* conn = connectDB();
+   PGresult *response = PQexec(conn, "SET client_min_messages = error;");
    response = PQexec(conn, "DELETE FROM indeed a USING (SELECT MIN(ctid) as ctid, snippet, company, jobtitle FROM indeed GROUP BY snippet, company, jobtitle HAVING COUNT(*) > 1) b WHERE a.jobtitle = b.jobtitle AND a.snippet = b.snippet AND a.company = b.company AND a.ctid <> b.ctid;");
 
    if (PQresultStatus(response) != PGRES_COMMAND_OK){
@@ -86,12 +94,11 @@ void insertIndeedDB(char *jobtitle, char *company, char *city, char *state, char
    PQfinish(conn);
 }
 
-
 void insertAdzunaDB(char *jobtitle, char *company, char *city, char *state, char *snippet, char *url, double longitude, double latitude, char *postDate){
    PGconn* conn = connectDB();
 
    char buffer[1024];
-   int num = snprintf(buffer, sizeof(buffer), "INSERT INTO adzuna( jobtitle, company, city, state, snippet, url, longitude, latitude, postDate) VALUES(%s, %s, %s, %s, %s, %s, %lf, %lf, %s);",  PQescapeLiteral(conn,jobtitle,(size_t) strlen(jobtitle)), PQescapeLiteral(conn,company,(size_t) strlen(company)), PQescapeLiteral(conn,city,(size_t) strlen(city)), PQescapeLiteral(conn,state,(size_t) strlen(state)), PQescapeLiteral(conn,snippet,(size_t) strlen(snippet)), PQescapeLiteral(conn,url,(size_t) strlen(url)), longitude, latitude, PQescapeLiteral(conn,postDate,(size_t) strlen(postDate)));
+   int num = snprintf(buffer, sizeof(buffer), "INSERT INTO adzuna( jobtitle, company, city, state, snippet, url, longitude, latitude, postDate, applied) VALUES(%s, %s, %s, %s, %s, %s, %lf, %lf, %s, %i);",  PQescapeLiteral(conn,jobtitle,(size_t) strlen(jobtitle)), PQescapeLiteral(conn,company,(size_t) strlen(company)), PQescapeLiteral(conn,city,(size_t) strlen(city)), PQescapeLiteral(conn,state,(size_t) strlen(state)), PQescapeLiteral(conn,snippet,(size_t) strlen(snippet)), PQescapeLiteral(conn,url,(size_t) strlen(url)), longitude, latitude, PQescapeLiteral(conn,postDate,(size_t) strlen(postDate)), 0);
    if (num >sizeof(buffer)){
       fprintf(stderr, "ERROR database.h: Buffer is too small. Increase Buffer size\n");
       exit(1);
@@ -99,10 +106,10 @@ void insertAdzunaDB(char *jobtitle, char *company, char *city, char *state, char
    //supresses a notice of the table already existing
    PGresult *response = PQexec(conn, "SET client_min_messages = error;");
 
-   response = PQexec(conn, "CREATE TABLE IF NOT EXISTS adzuna(ID SERIAL PRIMARY KEY, jobtitle VARCHAR(255), company VARCHAR(255), city VARCHAR(50), state VARCHAR(25), snippet VARCHAR(500), url VARCHAR(500), longitude DOUBLE PRECISION, latitude DOUBLE PRECISION, postDate VARCHAR(255));");
+   response = PQexec(conn, "CREATE TABLE IF NOT EXISTS adzuna(ID SERIAL PRIMARY KEY, jobtitle VARCHAR(255), company VARCHAR(255), city VARCHAR(50), state VARCHAR(25), snippet VARCHAR(500), url VARCHAR(500), longitude DOUBLE PRECISION, latitude DOUBLE PRECISION, postDate VARCHAR(255), applied INTEGER);");
 
    if (PQresultStatus(response) != PGRES_COMMAND_OK){
-      printf("ERROR: CREATE TABLE Command failed.\n");
+      printf("ERROR: CREATE ADZUNA TABLE Command failed.\n");
       PQclear(response);
       do_exit(conn);
    }
@@ -115,6 +122,13 @@ void insertAdzunaDB(char *jobtitle, char *company, char *city, char *state, char
       do_exit(conn);
    }
 
+   PQclear(response);
+   PQfinish(conn);
+}
+
+void checkDupAdzuna(){
+   PGconn* conn = connectDB();
+   PGresult *response = PQexec(conn, "SET client_min_messages = error;");
    response = PQexec(conn, "DELETE FROM adzuna a USING (SELECT MIN(ctid) as ctid, company, snippet, jobtitle FROM adzuna GROUP BY snippet, company, jobtitle HAVING COUNT(*) > 1) b WHERE a.jobtitle = b.jobtitle AND a.snippet = b.snippet AND a.company = b.company AND a.ctid <> b.ctid;");
 
    if (PQresultStatus(response) != PGRES_COMMAND_OK){
@@ -127,12 +141,11 @@ void insertAdzunaDB(char *jobtitle, char *company, char *city, char *state, char
    PQfinish(conn);
 }
 
-
 void insertAuthenticDB(char *jobtitle, char *company, char *city, char *state, char *snippet, char *url, double longitude, double latitude, char *postDate){
    PGconn* conn = connectDB();
 
    char buffer[1024];
-   int num = snprintf(buffer, sizeof(buffer), "INSERT INTO authentic( jobtitle, company, city, state, snippet, url, longitude, latitude, postDate) VALUES(%s, %s, %s, %s, %s, %s, %lf, %lf, %s);",  PQescapeLiteral(conn,jobtitle,(size_t) strlen(jobtitle)), PQescapeLiteral(conn,company,(size_t) strlen(company)), PQescapeLiteral(conn,city,(size_t) strlen(city)), PQescapeLiteral(conn,state,(size_t) strlen(state)), PQescapeLiteral(conn,snippet,(size_t) strlen(snippet)), PQescapeLiteral(conn,url,(size_t) strlen(url)), longitude, latitude, PQescapeLiteral(conn,postDate,(size_t) strlen(postDate)));
+   int num = snprintf(buffer, sizeof(buffer), "INSERT INTO authentic( jobtitle, company, city, state, snippet, url, longitude, latitude, postDate, applied) VALUES(%s, %s, %s, %s, %s, %s, %lf, %lf, %s, %i);",  PQescapeLiteral(conn,jobtitle,(size_t) strlen(jobtitle)), PQescapeLiteral(conn,company,(size_t) strlen(company)), PQescapeLiteral(conn,city,(size_t) strlen(city)), PQescapeLiteral(conn,state,(size_t) strlen(state)), PQescapeLiteral(conn,snippet,(size_t) strlen(snippet)), PQescapeLiteral(conn,url,(size_t) strlen(url)), longitude, latitude, PQescapeLiteral(conn,postDate,(size_t) strlen(postDate)), 0);
    if (num >sizeof(buffer)){
       fprintf(stderr, "ERROR database.h: Buffer is too small. Increase Buffer size\n");
       exit(1);
@@ -140,10 +153,10 @@ void insertAuthenticDB(char *jobtitle, char *company, char *city, char *state, c
    //supresses a notice of the table already existing
    PGresult *response = PQexec(conn, "SET client_min_messages = error;");
 
-   response = PQexec(conn, "CREATE TABLE IF NOT EXISTS authentic(ID SERIAL PRIMARY KEY, jobtitle VARCHAR(255), company VARCHAR(255), city VARCHAR(50), state VARCHAR(25), snippet VARCHAR(5000), url VARCHAR(500), longitude DOUBLE PRECISION, latitude DOUBLE PRECISION, postDate VARCHAR(255));");
+   response = PQexec(conn, "CREATE TABLE IF NOT EXISTS authentic(ID SERIAL PRIMARY KEY, jobtitle VARCHAR(255), company VARCHAR(255), city VARCHAR(50), state VARCHAR(25), snippet VARCHAR(5000), url VARCHAR(500), longitude DOUBLE PRECISION, latitude DOUBLE PRECISION, postDate VARCHAR(255), applied INTEGER);");
 
    if (PQresultStatus(response) != PGRES_COMMAND_OK){
-      printf("ERROR: CREATE TABLE Command failed.\n");
+      printf("ERROR: CREATE AUTHENTIC TABLE Command failed.\n");
       PQclear(response);
       do_exit(conn);
    }
@@ -156,6 +169,13 @@ void insertAuthenticDB(char *jobtitle, char *company, char *city, char *state, c
       do_exit(conn);
    }
 
+   PQclear(response);
+   PQfinish(conn);
+}
+
+void checkDupAuthentic(){
+   PGconn* conn = connectDB();
+   PGresult *response = PQexec(conn, "SET client_min_messages = error;");
    response = PQexec(conn, "DELETE FROM authentic a USING (SELECT MIN(ctid) as ctid, snippet, company, jobtitle FROM authentic GROUP BY snippet, company, jobtitle HAVING COUNT(*) > 1) b WHERE a.jobtitle = b.jobtitle AND a.snippet = b.snippet AND a.company = b.company AND a.ctid <> b.ctid;");
 
    if (PQresultStatus(response) != PGRES_COMMAND_OK){
@@ -172,7 +192,7 @@ void insertZipDB(char *jobtitle, char *company, char *city, char *state, char *s
    PGconn* conn = connectDB();
 
    char buffer[2048];
-   int num = snprintf(buffer, sizeof(buffer), "INSERT INTO ZipRecruiter( jobtitle, company, city, state, snippet, url, longitude, latitude, relDate, postDate) VALUES(%s, %s, %s, %s, %s, %s, %lf, %lf, %s, %s);",  PQescapeLiteral(conn,jobtitle,(size_t) strlen(jobtitle)), PQescapeLiteral(conn,company,(size_t) strlen(company)), PQescapeLiteral(conn,city,(size_t) strlen(city)), PQescapeLiteral(conn,state,(size_t) strlen(state)), PQescapeLiteral(conn,snippet,(size_t) strlen(snippet)), PQescapeLiteral(conn,url,(size_t) strlen(url)), longitude, latitude, PQescapeLiteral(conn,relDate,(size_t) strlen(relDate)), PQescapeLiteral(conn,postDate,(size_t) strlen(postDate)));
+   int num = snprintf(buffer, sizeof(buffer), "INSERT INTO ZipRecruiter( jobtitle, company, city, state, snippet, url, longitude, latitude, relDate, postDate, applied) VALUES(%s, %s, %s, %s, %s, %s, %lf, %lf, %s, %s, %i);",  PQescapeLiteral(conn,jobtitle,(size_t) strlen(jobtitle)), PQescapeLiteral(conn,company,(size_t) strlen(company)), PQescapeLiteral(conn,city,(size_t) strlen(city)), PQescapeLiteral(conn,state,(size_t) strlen(state)), PQescapeLiteral(conn,snippet,(size_t) strlen(snippet)), PQescapeLiteral(conn,url,(size_t) strlen(url)), longitude, latitude, PQescapeLiteral(conn,relDate,(size_t) strlen(relDate)), PQescapeLiteral(conn,postDate,(size_t) strlen(postDate)), 0);
    if (num >sizeof(buffer)){
       fprintf(stderr, "ERROR database.h: Buffer is too small. Increase Buffer size\n");
       exit(1);
@@ -180,10 +200,10 @@ void insertZipDB(char *jobtitle, char *company, char *city, char *state, char *s
    //supresses a notice of the table already existing
    PGresult *response = PQexec(conn, "SET client_min_messages = error;");
 
-   response = PQexec(conn, "CREATE TABLE IF NOT EXISTS ZipRecruiter(ID SERIAL PRIMARY KEY, jobtitle VARCHAR(255), company VARCHAR(255), city VARCHAR(50), state VARCHAR(25), snippet VARCHAR(2000), url VARCHAR(2000), longitude DOUBLE PRECISION, latitude DOUBLE PRECISION, relDate VARCHAR(255), postDate VARCHAR(255));");
+   response = PQexec(conn, "CREATE TABLE IF NOT EXISTS ZipRecruiter(ID SERIAL PRIMARY KEY, jobtitle VARCHAR(255), company VARCHAR(255), city VARCHAR(50), state VARCHAR(25), snippet VARCHAR(2000), url VARCHAR(2000), longitude DOUBLE PRECISION, latitude DOUBLE PRECISION, relDate VARCHAR(255), postDate VARCHAR(255), applied INTEGER);");
 
    if (PQresultStatus(response) != PGRES_COMMAND_OK){
-      printf("ERROR: CREATE TABLE Command failed.\n");
+      printf("ERROR: CREATE ZIPRECRUITER TABLE Command failed.\n");
       PQclear(response);
       do_exit(conn);
    }
@@ -196,6 +216,13 @@ void insertZipDB(char *jobtitle, char *company, char *city, char *state, char *s
       do_exit(conn);
    }
 
+   PQclear(response);
+   PQfinish(conn);
+}
+
+void checkDupZip(){
+   PGconn* conn = connectDB();
+   PGresult *response = PQexec(conn, "SET client_min_messages = error;");
    response = PQexec(conn, "DELETE FROM ZipRecruiter a USING (SELECT MIN(ctid) as ctid, snippet, company, jobtitle FROM ZipRecruiter GROUP BY snippet, company, jobtitle HAVING COUNT(*) > 1) b WHERE a.jobtitle = b.jobtitle AND a.snippet = b.snippet AND a.company = b.company AND a.ctid <> b.ctid;");
 
    if (PQresultStatus(response) != PGRES_COMMAND_OK){

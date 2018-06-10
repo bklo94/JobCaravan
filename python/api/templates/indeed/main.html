@@ -90,11 +90,7 @@ var markerClusters = L.markerClusterGroup();
 {% endfor %}
 mymap.addLayer( markerClusters );
 
-mymap.on('zoomend', function onZoomEnd(){
-   filterBounds(mymap.getBounds().getNorth(), mymap.getBounds().getSouth(), mymap.getBounds().getWest(), mymap.getBounds().getEast())
-});
-
-mymap.on('dragend ', function onDragEnd(){
+mymap.on('moveend', function onZoomEnd(){
    filterBounds(mymap.getBounds().getNorth(), mymap.getBounds().getSouth(), mymap.getBounds().getWest(), mymap.getBounds().getEast())
 });
 

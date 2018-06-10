@@ -92,7 +92,7 @@ void callAPI(){
    int start = 1, end = 25, size;
    cJSON *response;
    struct input Indeed, Adzuna, AuthenticJobs, ZipRecruiter;
-   char jobArr[22][256] = {"Software+Engineer","Software+Developer","SDET","Junior+Engineer","Junior+Software","New+Grad+Engineer","New+Grad+Software","Software+Engineer+Apprentice","Computer+Science","Python+Developer","C+Developer","Java+Developer","Android+Developer","iOS+Developer","Javascript+Developer","Full+Stack","Front+End+Engineer","Back+End+Engineer","QA+Engineer","Quality+Assurance+Engineer","Devops","Forward+Deployed+Engineer"};
+   char jobArr[23][256] = {"Software+Engineer","Software+Developer","SDET","Junior+Engineer","Junior+Software","New+Grad+Engineer","New+Grad+Software","Software+Engineer+Apprentice","Computer+Science","Python+Developer","C+Developer","Java+Developer","Android+Developer","iOS+Developer","Javascript+Developer","Full+Stack","Front+End+Engineer","Back+End+Engineer","QA+Engineer","Quality+Assurance+Engineer","Devops","Forward+Deployed+Engineer","c%2B%2B+Developer"};
    static struct state CA, WA, NY, MA, IL, QC, CO, UT, GA, NC ,TX ,PA ,ON ,DC ,MI ,WI ,OR ,BC ,OH ,AB ,FL ,MN ,MO ,NV ,AZ ,NS ,AL, OK;
    CA.name = "CA";
    CA.size = 7;
@@ -197,6 +197,7 @@ void callAPI(){
          }
       }
    }
+   checkDupIndeed();
 
    for (int a = 0; a < sizeof(arr)/sizeof(arr[0]); a++){
       for (int b = 0; b < arr[a].size;b++){
@@ -216,6 +217,7 @@ void callAPI(){
          }
       }
    }
+   checkDupZip();
 
    for (int a = 0; a < sizeof(arr)/sizeof(arr[0]); a++){
       for (int b = 0; b < arr[a].size;b++){
@@ -229,6 +231,7 @@ void callAPI(){
          }
       }
    }
+   checkDupAuthentic();
 
    for (int a = 0; a < sizeof(arr)/sizeof(arr[0]); a++){
       for (int b = 0; b < arr[a].size;b++){
@@ -248,6 +251,7 @@ void callAPI(){
          }
       }
    }
+   checkDupAdzuna();
 
    return;
 }

@@ -33,11 +33,18 @@ PGconn *connectDB();
 
 void insertIndeedDB(char *jobtitle, char *company, char *city, char *state, char *snippet, char *url, double longitude, double latitude, char *relDate, char *postDate);
 
+void checkDupIndeed();
+
 void insertAdzunaDB(char *jobtitle, char *company, char *city, char *state, char *snippet, char *url, double longitude, double latitude, char *postDate);
+
+void checkDupAdzuna();
 
 void insertAuthenticDB(char *jobtitle, char *company, char *city, char *state, char *snippet, char *url, double longitude, double latitude, char *postDate);
 
+void checkDupAuthentic();
+
 void insertZipDB(char *jobtitle, char *company, char *city, char *state, char *snippet, char *url, double longitude, double latitude, char *relDate, char *postDate);
 
+void checkDupZip();
 
 #endif
