@@ -93,7 +93,7 @@ void callAPI(){
    cJSON *response;
    struct input Indeed, Adzuna, AuthenticJobs, ZipRecruiter;
    char jobArr[23][256] = {"Software+Engineer","Software+Developer","SDET","Junior+Engineer","Junior+Software","New+Grad+Engineer","New+Grad+Software","Software+Engineer+Apprentice","Computer+Science","Python+Developer","C+Developer","Java+Developer","Android+Developer","iOS+Developer","Javascript+Developer","Full+Stack","Front+End+Engineer","Back+End+Engineer","QA+Engineer","Quality+Assurance+Engineer","Devops","Forward+Deployed+Engineer","c%2B%2B+Developer"};
-   static struct state CA, WA, NY, MA, IL, QC, CO, UT, GA, NC ,TX ,PA ,ON ,DC ,MI ,WI ,OR ,BC ,OH ,AB ,FL ,MN ,MO ,NV ,AZ ,NS ,AL, OK;
+   static struct state CA, WA, NY, MA, IL, QC, CO, UT, GA, NC ,TX ,PA ,ON ,DC ,MI ,WI ,OR ,BC ,OH ,AB ,FL ,MN ,MO ,NV ,AZ ,NS ,AL, OK, LA;
    CA.name = "CA";
    CA.size = 7;
    memcpy(CA.cities,(char *[7]){"San+Francisco","Oakland","San+Jose","Sacramento","Los+Angeles","Irvine","San+Diego"},7*sizeof(char*));
@@ -126,13 +126,16 @@ void callAPI(){
    memcpy(NC.cities,(char *[3]){"Charlotte", "Raleigh", "RTP"},3*sizeof(char*));
    TX.name = "TX";
    TX.size = 5;
-   memcpy(TX.cities,(char *[5]){"Austin", "Dallas","Fort+Worth","Houston","San+Antonio"},5*sizeof(char*));
+   memcpy(TX.cities,(char *[6]){"Houston","Austin", "Dallas","Fort+Worth","Houston","San+Antonio"},6*sizeof(char*));
    PA.name = "PA";
    PA.size = 2;
    memcpy(PA.cities,(char *[2]){"Pittsburgh","Philadelphia"},2*sizeof(char*));
    ON.name = "ON";
    ON.size = 4;
    memcpy(ON.cities,(char *[4]){"Kitchener","Waterloo","Toronto","Ottawa"},4*sizeof(char*));
+   LA.name = "LA";
+   LA.size = 1;
+   memcpy(LA.cities,(char *[1]){"New+Orleans"},1*sizeof(char*));
    DC.name = "DC";
    DC.size = 1;
    memcpy(DC.cities,(char *[1]){"Washington"},1*sizeof(char*));
@@ -158,11 +161,11 @@ void callAPI(){
    FL.size = 3;
    memcpy(FL.cities,(char *[3]){"Tampa", "St.+Petersburg","Miami"},3*sizeof(char*));
    MN.name = "MN";
-   MN.size = 2;
-   memcpy(MN.cities,(char *[2]){"Minneapolis-Saint Paul", "Twin+Cities"},2*sizeof(char*));
+   MN.size = 3;
+   memcpy(MN.cities,(char *[3]){"Minneapolis","Saint+Paul", "Twin+Cities"},3*sizeof(char*));
    MO.name = "MO";
    MO.size = 3;
-   memcpy(MO.cities,(char *[3]){"Kansas+City-Overland+Park", "St.Louis","Kansas+City"},3*sizeof(char*));
+   memcpy(MO.cities,(char *[3]){"Overland+Park", "St.Louis","Kansas+City"},3*sizeof(char*));
    NV.name = "NV";
    NV.size = 1;
    memcpy(NV.cities,(char *[1]){"Las+Vegas"},1*sizeof(char*));
@@ -178,7 +181,7 @@ void callAPI(){
    OK.name = "OK";
    OK.size = 1;
    memcpy(OK.cities,(char *[1]){"Oklahoma+City"},1*sizeof(char*));
-   struct state arr[] = {CA, WA, NY, MA, IL, QC, CO, UT, GA, NC ,TX ,PA ,ON ,DC ,MI ,WI ,OR ,BC ,OH ,AB ,FL ,MN ,MO ,NV ,AZ ,NS ,AL, OK};
+   struct state arr[] = {CA, WA, NY, MA, IL, QC, CO, UT, GA, NC ,TX ,PA ,ON ,DC ,MI ,WI ,OR ,BC ,OH ,AB ,FL, MN , MO ,NV ,AZ ,NS ,AL, OK};
 
    for (int a = 0; a < sizeof(arr)/sizeof(arr[0]); a++){
       for (int b = 0; b < arr[a].size;b++){
