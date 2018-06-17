@@ -1,9 +1,9 @@
 #http://yaml-online-parser.appspot.com/
 version: '3.1'
 services:
- web:
+ backend:
   container_name: cbackend
-  build: .
+  build: ./c
   ports:
    - "10800:10800"
   environment:
@@ -13,8 +13,10 @@ services:
    - db
   links:
    - db
+  privileged: true
 
  db:
+  container_name: jobDB
   image: postgres
   restart: always
   environment:
@@ -28,7 +30,21 @@ services:
    - /var/run/postgresql:/var/run/postgresql
 
  adminer:
+  container_name: DBMonitor
   image: adminer
   restart: always
   ports:
    - "8080:8080"
+
+ frontend:
+  container_name: pythonFront
+  build: ./python
+  ports:
+   - "10801:10801"
+  environment:
+   PGHOST: db
+   PGPORT: 5432
+  depends_on:
+   - db
+  links:
+   - db

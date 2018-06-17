@@ -1,0 +1,16 @@
+---
+- hosts: all
+  tasks:
+   - name: list files in folder
+     command: ls
+- hosts: webserver
+  become: true
+  tasks:
+   - name: install nginx
+     apt: name=nginx state=present update_cache=yes
+   - name: delete index.html
+     file: path=/var/www/html/index.html state=absent
+     notify: restart nginx
+  handlers:
+   - name: restart nginx
+     service: name=nginx state=restarted

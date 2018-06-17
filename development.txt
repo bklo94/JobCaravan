@@ -1,0 +1,6 @@
+[controller]
+control ansible_connection=local
+
+[webserver]
+10.0.0.47 ansible_connection=ssh ansible_user=pi
+

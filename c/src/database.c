@@ -58,7 +58,7 @@ void insertIndeedDB(char *jobtitle, char *company, char *city, char *state, char
    //supresses a notice of the table already existing
    PGresult *response = PQexec(conn, "SET client_min_messages = error;");
 
-   response = PQexec(conn, "CREATE TABLE IF NOT EXISTS Indeed(ID SERIAL PRIMARY KEY, jobtitle VARCHAR(255), company VARCHAR(255), city VARCHAR(50), state VARCHAR(25), snippet VARCHAR(500), url VARCHAR(500), longitude DOUBLE PRECISION, latitude DOUBLE PRECISION, relDate VARCHAR(255), postDate VARCHAR(255), applied INTEGER);");
+   response = PQexec(conn, "CREATE TABLE IF NOT EXISTS Indeed(jobtitle VARCHAR(255), company VARCHAR(255), city VARCHAR(50), state VARCHAR(25), snippet VARCHAR(500), url VARCHAR(500), longitude DOUBLE PRECISION, latitude DOUBLE PRECISION, relDate VARCHAR(255), postDate VARCHAR(255), applied INTEGER);");
 
    if (PQresultStatus(response) != PGRES_COMMAND_OK){
       printf("ERROR: CREATE INDEED TABLE Command failed.\n");

@@ -48,7 +48,7 @@ void callAPI();
 void outputLog(char*);
 void appendBuidlTime();
 
-//devug with valgrind --leak-check=full -v /bin/server
+//devug with valgrind --leak-check=full --show-reachable=yes --track-origins=yes /bin/main
 //https://www.binarytides.com/receive-full-data-with-recv-socket-function-in-c/
 //https://stackoverflow.com/questions/22077802/simple-c-example-of-doing-an-http-post-and-consuming-the-response
 //https://www.geeksforgeeks.org/socket-programming-cc/

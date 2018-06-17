@@ -7,6 +7,7 @@ FROM gcc
 ADD . /cbackend
 WORKDIR /cbackend
 RUN make
+ENTRYPOINT "test/debug.sh"
 CMD sleep 5 && ./bin/main
 
 EXPOSE 10800
