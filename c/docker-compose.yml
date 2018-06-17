@@ -1,0 +1,34 @@
+#http://yaml-online-parser.appspot.com/
+version: '3.1'
+services:
+ web:
+  container_name: cbackend
+  build: .
+  ports:
+   - "10800:10800"
+  environment:
+   PGHOST: db
+   PGPORT: 5432
+  depends_on:
+   - db
+  links:
+   - db
+
+ db:
+  image: postgres
+  restart: always
+  environment:
+   POSTGRES_DB: jobsdb
+   POSTGRES_USER: bklo
+   POSTGRES_PASSWORD: arc170
+   PGDATA: /var/lib/postgresql/data/pgdata
+  ports:
+   - "5432:5432"
+  volumes:
+   - /var/run/postgresql:/var/run/postgresql
+
+ adminer:
+  image: adminer
+  restart: always
+  ports:
+   - "8080:8080"

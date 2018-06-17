@@ -106,7 +106,7 @@ void insertAdzunaDB(char *jobtitle, char *company, char *city, char *state, char
    //supresses a notice of the table already existing
    PGresult *response = PQexec(conn, "SET client_min_messages = error;");
 
-   response = PQexec(conn, "CREATE TABLE IF NOT EXISTS adzuna(ID SERIAL PRIMARY KEY, jobtitle VARCHAR(255), company VARCHAR(255), city VARCHAR(50), state VARCHAR(25), snippet VARCHAR(500), url VARCHAR(500), longitude DOUBLE PRECISION, latitude DOUBLE PRECISION, postDate VARCHAR(255), applied INTEGER);");
+   response = PQexec(conn, "CREATE TABLE IF NOT EXISTS adzuna(jobtitle VARCHAR(255), company VARCHAR(255), city VARCHAR(50), state VARCHAR(25), snippet VARCHAR(500), url VARCHAR(500), longitude DOUBLE PRECISION, latitude DOUBLE PRECISION, postDate VARCHAR(255), applied INTEGER);");
 
    if (PQresultStatus(response) != PGRES_COMMAND_OK){
       printf("ERROR: CREATE ADZUNA TABLE Command failed.\n");
@@ -153,7 +153,7 @@ void insertAuthenticDB(char *jobtitle, char *company, char *city, char *state, c
    //supresses a notice of the table already existing
    PGresult *response = PQexec(conn, "SET client_min_messages = error;");
 
-   response = PQexec(conn, "CREATE TABLE IF NOT EXISTS authentic(ID SERIAL PRIMARY KEY, jobtitle VARCHAR(255), company VARCHAR(255), city VARCHAR(50), state VARCHAR(25), snippet VARCHAR(5000), url VARCHAR(500), longitude DOUBLE PRECISION, latitude DOUBLE PRECISION, postDate VARCHAR(255), applied INTEGER);");
+   response = PQexec(conn, "CREATE TABLE IF NOT EXISTS authentic(jobtitle VARCHAR(255), company VARCHAR(255), city VARCHAR(50), state VARCHAR(25), snippet VARCHAR(5000), url VARCHAR(500), longitude DOUBLE PRECISION, latitude DOUBLE PRECISION, postDate VARCHAR(255), applied INTEGER);");
 
    if (PQresultStatus(response) != PGRES_COMMAND_OK){
       printf("ERROR: CREATE AUTHENTIC TABLE Command failed.\n");
@@ -200,7 +200,7 @@ void insertZipDB(char *jobtitle, char *company, char *city, char *state, char *s
    //supresses a notice of the table already existing
    PGresult *response = PQexec(conn, "SET client_min_messages = error;");
 
-   response = PQexec(conn, "CREATE TABLE IF NOT EXISTS ZipRecruiter(ID SERIAL PRIMARY KEY, jobtitle VARCHAR(255), company VARCHAR(255), city VARCHAR(50), state VARCHAR(25), snippet VARCHAR(2000), url VARCHAR(2000), longitude DOUBLE PRECISION, latitude DOUBLE PRECISION, relDate VARCHAR(255), postDate VARCHAR(255), applied INTEGER);");
+   response = PQexec(conn, "CREATE TABLE IF NOT EXISTS ZipRecruiter(jobtitle VARCHAR(255), company VARCHAR(255), city VARCHAR(50), state VARCHAR(25), snippet VARCHAR(2000), url VARCHAR(2000), longitude DOUBLE PRECISION, latitude DOUBLE PRECISION, relDate VARCHAR(255), postDate VARCHAR(255), applied INTEGER);");
 
    if (PQresultStatus(response) != PGRES_COMMAND_OK){
       printf("ERROR: CREATE ZIPRECRUITER TABLE Command failed.\n");
