@@ -34,3 +34,9 @@ python/api/static/api\.js
 c/db/base/1/
 
 c/db/
+
+access\.log
+
+error\.log
+
+output\.log

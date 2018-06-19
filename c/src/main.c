@@ -188,10 +188,13 @@ void callAPI(){
          #pragma omp parallel for schedule(static) private(start, Indeed, response, size, end)
          for (int c = 0; c < sizeof(jobArr)/sizeof(jobArr[0]);c++){
             start = 0;
+            size = 0;
             do {
                Indeed = fillIndeed(start, jobArr[c], arr[a].cities[b], arr[a].name, Indeed);
                response = getRequest(Indeed.response);
-               size = returnIndeedSize(response);
+               if (size == 0){
+                  size = returnIndeedSize(response);
+               }
                returnIndeed(response);
                end = size;
                start+= 25;
@@ -207,10 +210,13 @@ void callAPI(){
          #pragma omp parallel for schedule(static) private(start, ZipRecruiter, response, size, end)
          for (int c = 0; c < sizeof(jobArr)/sizeof(jobArr[0]);c++){
             start = 0;
+            size = 0;
             do {
                ZipRecruiter = fillZipRecruiter(start,jobArr[c],arr[a].cities[b],arr[a].name,ZipRecruiter);
                response = getRequest(ZipRecruiter.response);
-               size = returnRecruiterSize(response);
+               if (size == 0){
+                  size = returnRecruiterSize(response);
+               }
                size /= 100;
                returnZipRecruiter(response);
                end = size;
@@ -241,10 +247,13 @@ void callAPI(){
          #pragma omp parallel for schedule(static) private(start, Adzuna, response, size, end)
          for (int c = 0; c < sizeof(jobArr)/sizeof(jobArr[0]);c++){
             start = 1;
+            size = 0;
             do {
                Adzuna = fillAdzuna(start, jobArr[c], arr[a].cities[b], arr[a].name, Adzuna);
                response = getRequest(Adzuna.response);
-               size = returnAdzunaSize(response);
+               if (size == 0){
+                  size = returnAdzunaSize(response);
+               }
                size /= 50;
                returnAdzuna(response);
                end = size;
