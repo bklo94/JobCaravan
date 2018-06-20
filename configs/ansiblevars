@@ -1,0 +1,11 @@
+---
+repo_url: ssh://git@github.com:bklo94/JobCaravan.git
+repo: JobCaravan
+home_dir: /home/ubuntu
+repo_dir: "{{ home_dir }}/{{ repo }}"
+django_dir: "{ repo_dir }}/python"
+static_dir: "{{ home_dir }}/python/api/static"
+django_project: JobCaravan
+dbname: jobsdb
+dbuser: bklo
+dbpassword: 

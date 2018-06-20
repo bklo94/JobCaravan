@@ -22,7 +22,7 @@ services:
   environment:
    POSTGRES_DB: jobsdb
    POSTGRES_USER: bklo
-   POSTGRES_PASSWORD: arc170
+   POSTGRES_PASSWORD: test
    PGDATA: /var/lib/postgresql/data/pgdata
   ports:
    - "5432:5432"

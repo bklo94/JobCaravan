@@ -40,3 +40,5 @@ access\.log
 error\.log
 
 output\.log
+
+python/api/templates/indeed/api\.js

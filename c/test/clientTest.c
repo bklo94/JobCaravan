@@ -31,7 +31,7 @@ int main(int argc, char const *argv[]) {
    serv_addr.sin_family = AF_INET;
    serv_addr.sin_port = htons(PORT);
 
-   if (inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr) < 0){
+   if (inet_pton(AF_INET, "10.0.0.85", &serv_addr.sin_addr) < 0){
       printf("Inavlid Address/Address not supported.\n");
       return -1;
    }
