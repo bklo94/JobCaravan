@@ -51,7 +51,6 @@ matrix:
     script:
     - python manage.py migrate --noinput
     - python manage.py inspectdb
-
 notifications:
    email:
    - brandonklo94@gmail.com
