@@ -30,3 +30,5 @@ python/static/api.js
 *.tar
 
 python/JobCaravan/static/api\.js
+
+python/mysite/settings\.py
