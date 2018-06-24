@@ -36,6 +36,7 @@ matrix:
     before_install:
     - pg_config
     - openssl aes-256-cbc -K $encrypted_d120f89d28ae_key -iv $encrypted_d120f89d28ae_iv -in secrets.tar.enc -out secrets.tar -d
+    - tar xvf secrets.tar
     - export DJANGO_SETTINGS_MODULE="mysite.settings"
     - export PYTHONPATH=$HOME/builds/bklo94/JobCaravan/python
     - export PIP_USE_MIRRORS=true
@@ -55,4 +56,3 @@ notifications:
    email:
    - brandonklo94@gmail.com
 
-   
