@@ -44,8 +44,6 @@ pyasn1==0.4.2
 pyasn1-modules==0.2.1
 pycrypto==2.6.1
 pycryptodome==3.6.1
-pygame===1.9.1release
-pygobject==3.14.0
 pyOpenSSL==17.5.0
 pyRFC3339==1.0
 pyserial==3.4
