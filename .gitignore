@@ -42,3 +42,7 @@ error\.log
 output\.log
 
 python/api/templates/indeed/api\.js
+
+docs/connections\.md
+
+python2/mysite/settings\.py

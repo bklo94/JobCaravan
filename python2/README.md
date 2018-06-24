@@ -1,0 +1,37 @@
+# Getting started with Django on Google Cloud Platform on App Engine Standard
+
+[![Open in Cloud Shell][shell_img]][shell_link]
+
+[shell_img]: http://gstatic.com/cloudssh/images/open-btn.png
+[shell_link]: https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/GoogleCloudPlatform/python-docs-samples&page=editor&open_in_editor=appengine/standard/django/README.md
+
+This repository is an example of how to run a [Django](https://www.djangoproject.com/)
+app on Google App Engine Standard Environment. It uses the
+[Writing your first Django app](https://docs.djangoproject.com/en/1.9/intro/tutorial01/) as the
+example app to deploy.
+
+
+# Tutorial
+See our [Running Django in the App Engine Standard Environment](https://cloud.google.com/python/django/appengine) tutorial for instructions for setting up and deploying this sample application.
+
+JobSpace Front End
+======
+Development In progress.
+
+Hosted Django. Requests are from the c backend and uploaded to postgres.
+
+Check out the progress above under the project tab!
+
+#Bind socket
+uwsgi_python3 --http-socket :8000 --module JobCaravan.wsgi
+
+#SSH into GCP
+ssh -i .ssh/google-compute-ssh brandonklo94@35.197.121.83
+
+#Copy to
+scp -r -i ~/.ssh/google-compute-ssh /home/bklo/Github/JobCaravan/python2/ brandonklo94@35.197.121.83:~/python2/
+
+#Copy back
+scp -r -i ~/.ssh/google-compute-ssh brandonklo94@35.197.121.83:~/python2/ /home/bklo/Github/JobCaravan/python2/
+
+uwsgi --http-socket :8001 --module mysite.wsgi:application --enable-threads
