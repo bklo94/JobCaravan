@@ -21,17 +21,3 @@ Development In progress.
 Hosted Django. Requests are from the c backend and uploaded to postgres.
 
 Check out the progress above under the project tab!
-
-#Bind socket
-uwsgi_python3 --http-socket :8000 --module JobCaravan.wsgi
-
-#SSH into GCP
-ssh -i .ssh/google-compute-ssh brandonklo94@35.197.121.83
-
-#Copy to
-scp -r -i ~/.ssh/google-compute-ssh /home/bklo/Github/JobCaravan/python2/ brandonklo94@35.197.121.83:~/python2/
-
-#Copy back
-scp -r -i ~/.ssh/google-compute-ssh brandonklo94@35.197.121.83:~/python2/ /home/bklo/Github/JobCaravan/python2/
-
-uwsgi --http-socket :8001 --module mysite.wsgi:application --enable-threads

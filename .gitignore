@@ -46,3 +46,4 @@ python/api/templates/indeed/api\.js
 docs/connections\.md
 
 python2/mysite/settings\.py
+python/static/api.js
