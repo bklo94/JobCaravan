@@ -53,19 +53,7 @@ SecretStorage==2.3.1
 service-identity==16.0.0
 six==1.10.0
 Twisted==17.9.0
-Twisted-Conch==14.0.2
-Twisted-Core==14.0.2
-Twisted-Lore==14.0.2
-Twisted-Mail==14.0.2
-Twisted-Names==14.0.2
-Twisted-News==14.0.2
-Twisted-Runner==14.0.2
-Twisted-Web==14.0.2
-Twisted-Words==14.0.2
 urllib3==1.16
 uWSGI==2.0.17
 virtualenv==16.0.0
-zope.component==4.2.1
-zope.event==4.0.3
-zope.interface==4.3.2
 
