@@ -47,7 +47,6 @@ pycryptodome==3.6.1
 pyOpenSSL==17.5.0
 pyRFC3339==1.0
 pyserial==3.4
-python-libtorrent==0.16.18
 pytz==2018.4
 requests==2.11.1
 SecretStorage==2.3.1
