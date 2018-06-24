@@ -47,3 +47,5 @@ docs/connections\.md
 
 python2/mysite/settings\.py
 python/static/api.js
+
+*.tar
