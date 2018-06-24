@@ -42,8 +42,7 @@ matrix:
     - export PIP_USE_MIRRORS=true
     install:
     - easy_install distribute
-    - pip install -r python/requirements.txt
-    - pip install django==2.0.4 --quiet
+    - pip install -r python/requirements.txt --no-cache-dir
     - pip install psycopg2 --quiet
     before_script:
     - sudo /etc/init.d/postgresql restart
