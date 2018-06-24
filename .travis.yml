@@ -51,6 +51,7 @@ matrix:
     - psql -c "CREATE DATABASE testdb;" -U postgres
     script:
     - python manage.py migrate --noinput
+    - python manage.py inspectdb --noinput
 
 notifications:
    email:
