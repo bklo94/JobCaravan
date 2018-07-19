@@ -1,7 +1,7 @@
 docs/* linguist-documentation
 python/JobCaravan/templates/* linguist-vendored
-python/api/static/* linguist-vendored
-python/static* linguist-vendored
+python/JobCaravan/static/* linguist-vendored
+python/static/* linguist-vendored
 *.log linguist-documentation
 *.md linguist-documentation
 *.sh linguist-vendored
