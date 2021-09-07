@@ -11,9 +11,9 @@ ConfigArgParse==0.11.0
 configobj==5.0.6
 configparser==3.5.0
 constantly==15.1.0
-cryptography==2.1.4
+cryptography==2.3
 decorator==4.1.2
-Django==1.11.13
+Django==2.2.18
 django-rest-framework==0.1.0
 djangorestframework==3.8.2
 djangosecure==0.0.9
