@@ -33,7 +33,7 @@ MarkupSafe==0.23
 meld3==1.0.2
 mock==2.0.0
 ndg-httpsclient==0.4.2
-numpy==1.13.3
+numpy==1.22.0
 olefile==0.45.1
 parsedatetime==1.4
 pbr==1.8.0
