@@ -28,7 +28,7 @@ incremental==16.10.1
 ipaddress==1.0.17
 keyring==10.6.0
 keyrings.alt==3.0
-Mako==1.0.0
+Mako==1.2.2
 MarkupSafe==0.23
 meld3==1.0.2
 mock==2.0.0
