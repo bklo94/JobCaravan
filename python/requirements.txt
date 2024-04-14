@@ -23,7 +23,7 @@ funcsigs==1.0.2
 future==0.16.0
 html5lib==0.999
 hyperlink==17.3.1
-idna==2.6
+idna==3.7
 incremental==16.10.1
 ipaddress==1.0.17
 keyring==10.6.0
