@@ -38,7 +38,7 @@ olefile==0.45.1
 parsedatetime==1.4
 pbr==1.8.0
 psycopg2==2.7.5
-pyasn1==0.4.2
+pyasn1==0.6.2
 pyasn1-modules==0.2.1
 pycrypto==2.6.1
 pycryptodome==3.6.1
